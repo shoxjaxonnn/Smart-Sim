@@ -20,12 +20,20 @@ const sandboxMsg = ref('')
 const studentCode = ref('')
 const sandboxResult = ref(null)
 const atBottom = ref(true)
-const codeOpen = ref(false)
+const codeOpen = ref(defaultCodeOpen())
+const chatWidth = ref(520)
+const isResizing = ref(false)
 
 const streamEl = ref(null)
 const taEl = ref(null)
+const splitEl = ref(null)
+const codeTaEl = ref(null)
+const codeOverlayEl = ref(null)
+const gutterEl = ref(null)
 let nextId = 0
 let onKeydownGlobal = () => {}
+let onPointerMove = () => {}
+let onPointerUp = () => {}
 
 const starters = [
   'Server error logida nima yozilgan?',
@@ -40,6 +48,26 @@ const codeUnlocked = computed(() => {
   if (!round) return Boolean(props.scenario?.code_challenge?.tests)
   return userTurns.value >= round
 })
+const hasCodeChallenge = computed(() => {
+  return Boolean(props.scenario?.code_challenge?.buggy_code || props.scenario?.code_challenge?.tests)
+})
+const lineCount = computed(() => Math.max(1, studentCode.value.split('\n').length))
+const codeLines = computed(() => Array.from({ length: lineCount.value }, (_, i) => i + 1))
+const diagnostics = computed(() => inspectCode(studentCode.value, props.scenario?.code_language || 'python'))
+const diagnosticsByLine = computed(() => {
+  const map = new Map()
+  diagnostics.value.forEach((d) => {
+    if (!map.has(d.line)) map.set(d.line, [])
+    map.get(d.line).push(d)
+  })
+  return map
+})
+const errorCount = computed(() => diagnostics.value.filter((d) => d.type === 'error').length)
+const warningCount = computed(() => diagnostics.value.filter((d) => d.type === 'warning').length)
+const highlightedCode = computed(() => highlightCode(studentCode.value, props.scenario?.code_language || 'python'))
+const splitStyle = computed(() => ({
+  '--chat-width': `${chatWidth.value}px`,
+}))
 
 watch(
   () => props.scenario?.id,
@@ -51,7 +79,7 @@ watch(
     sandboxResult.value = null
     confirming.value = false
     studentCode.value = ''
-    codeOpen.value = false
+    codeOpen.value = defaultCodeOpen()
   },
   { immediate: true }
 )
@@ -73,15 +101,29 @@ onMounted(() => {
   )
   autoGrow()
   onKeydownGlobal = (event) => {
-    if (event.key === 'Escape') {
-      codeOpen.value = false
-    }
+    if (event.key === 'Escape') codeOpen.value = false
+  }
+  onPointerMove = (event) => {
+    if (!isResizing.value || !splitEl.value) return
+    const rect = splitEl.value.getBoundingClientRect()
+    const minChat = 360
+    const minIde = 420
+    const next = Math.min(Math.max(event.clientX - rect.left, minChat), rect.width - minIde)
+    chatWidth.value = Math.round(next)
+  }
+  onPointerUp = () => {
+    isResizing.value = false
+    document.body.classList.remove('is-resizing-pane')
   }
   window.addEventListener('keydown', onKeydownGlobal)
+  window.addEventListener('pointermove', onPointerMove)
+  window.addEventListener('pointerup', onPointerUp)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKeydownGlobal)
+  window.removeEventListener('pointermove', onPointerMove)
+  window.removeEventListener('pointerup', onPointerUp)
 })
 
 function now() {
@@ -93,10 +135,7 @@ function pushMsg(role, content) {
 }
 
 function fmt(text) {
-  const esc = text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
+  const esc = escapeHtml(text)
   return esc
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
@@ -181,7 +220,7 @@ async function runSandbox(mode = 'run') {
     sandboxResult.value = res
     if (res.passed) {
       sandboxMsg.value = mode === 'submit'
-        ? 'Topshirildi. Testlar o‘tdi.'
+        ? "Topshirildi. Testlar o'tdi."
         : "Testlar o'tdi. Yechim ishladi."
     } else {
       sandboxMsg.value = res.timed_out
@@ -206,19 +245,122 @@ function onKeydown(e) {
 function toggleCodePane() {
   codeOpen.value = !codeOpen.value
 }
+
+function defaultCodeOpen() {
+  if (typeof window === 'undefined') return true
+  return !window.matchMedia('(max-width: 900px)').matches
+}
+
+function startResize(event) {
+  if (window.matchMedia('(max-width: 900px)').matches) return
+  isResizing.value = true
+  document.body.classList.add('is-resizing-pane')
+  event.preventDefault()
+}
+
+function syncCodeScroll() {
+  const source = codeTaEl.value
+  if (!source) return
+  if (codeOverlayEl.value) {
+    codeOverlayEl.value.scrollTop = source.scrollTop
+    codeOverlayEl.value.scrollLeft = source.scrollLeft
+  }
+  if (gutterEl.value) gutterEl.value.scrollTop = source.scrollTop
+}
+
+function lineClass(line) {
+  const items = diagnosticsByLine.value.get(line) || []
+  if (items.some((d) => d.type === 'error')) return 'has-error'
+  if (items.length) return 'has-warning'
+  return ''
+}
+
+function escapeHtml(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+function highlightCode(code, language) {
+  const escaped = escapeHtml(code || ' ')
+  const lang = String(language || '').toLowerCase()
+  const keywords = lang.includes('python')
+    ? /\b(def|return|if|elif|else|for|while|in|and|or|not|class|try|except|finally|import|from|as|with|pass|break|continue|True|False|None)\b/g
+    : /\b(function|return|if|else|for|while|const|let|var|class|try|catch|finally|import|from|export|true|false|null|undefined|async|await)\b/g
+
+  return escaped
+    .replace(/(#.*)$/gm, '<span class="tok-comment">$1</span>')
+    .replace(/(&quot;.*?&quot;|'.*?')/g, '<span class="tok-string">$1</span>')
+    .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="tok-number">$1</span>')
+    .replace(keywords, '<span class="tok-keyword">$1</span>')
+}
+
+function inspectCode(code, language) {
+  const lang = String(language || '').toLowerCase()
+  if (!lang.includes('python')) return inspectGeneric(code)
+  const diagnostics = []
+  const lines = String(code || '').split('\n')
+  const stack = []
+  const closers = { ')': '(', ']': '[', '}': '{' }
+  const openers = new Set(['(', '[', '{'])
+
+  lines.forEach((raw, index) => {
+    const lineNo = index + 1
+    const line = raw.replace(/\t/g, '    ')
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith('#')) return
+
+    for (const char of trimmed.replace(/(['"]).*?\1/g, '')) {
+      if (openers.has(char)) stack.push({ char, line: lineNo })
+      if (closers[char]) {
+        const prev = stack.pop()
+        if (!prev || prev.char !== closers[char]) {
+          diagnostics.push({ line: lineNo, type: 'error', message: `Unmatched "${char}"` })
+        }
+      }
+    }
+
+    if (/^(def|class|if|elif|else|for|while|try|except|finally|with)\b/.test(trimmed) && !trimmed.endsWith(':')) {
+      diagnostics.push({ line: lineNo, type: 'error', message: 'Python block needs ":" at line end.' })
+    }
+
+    const previous = lines[index - 1]?.trim() || ''
+    if (previous.endsWith(':') && trimmed && line.search(/\S/) <= (lines[index - 1]?.search(/\S/) ?? 0)) {
+      diagnostics.push({ line: lineNo, type: 'error', message: 'Indented block expected after previous line.' })
+    }
+
+    if (/\bprint\s+[^(]/.test(trimmed)) {
+      diagnostics.push({ line: lineNo, type: 'warning', message: 'Use print(...) syntax in Python 3.' })
+    }
+  })
+
+  stack.forEach((item) => {
+    diagnostics.push({ line: item.line, type: 'error', message: `Unclosed "${item.char}"` })
+  })
+
+  return diagnostics
+}
+
+function inspectGeneric(code) {
+  const diagnostics = []
+  const lines = String(code || '').split('\n')
+  lines.forEach((line, index) => {
+    if (/=\s*=$/.test(line.trim())) {
+      diagnostics.push({ line: index + 1, type: 'warning', message: 'Incomplete comparison.' })
+    }
+  })
+  return diagnostics
+}
 </script>
 
 <template>
   <div class="sim-shell" :class="{ 'code-open': codeOpen }">
-    <Transition name="fade">
-      <button v-if="codeOpen" class="drawer-backdrop" aria-label="Close code pane" @click="toggleCodePane"></button>
-    </Transition>
-
-    <div class="split">
+    <div class="split" ref="splitEl" :style="splitStyle">
       <section class="chat-pane">
         <div class="chat-head">
           <div>
-            <div class="kicker">AI Tutor</div>
+            <div class="kicker">AI Mentor</div>
             <h3>{{ scenario.title }}</h3>
           </div>
           <div class="chat-tools">
@@ -231,7 +373,7 @@ function toggleCodePane() {
             </select>
             <span class="meta-pill">{{ userTurns }} turn</span>
             <button class="btn-ghost code-toggle" :aria-expanded="codeOpen" @click="toggleCodePane">
-              {{ codeOpen ? 'Hide code' : 'Code pane' }}
+              {{ codeOpen ? 'Hide IDE' : 'Open IDE' }}
             </button>
           </div>
         </div>
@@ -239,7 +381,7 @@ function toggleCodePane() {
         <div class="stream" ref="streamEl" @scroll="onScroll">
           <TransitionGroup name="msg">
             <div v-for="m in messages" :key="m.id" class="msg" :class="m.role">
-              <div class="avatar">{{ m.role === 'user' ? 'Sen' : 'AI' }}</div>
+              <div class="avatar">{{ m.role === 'user' ? 'ME' : 'AI' }}</div>
               <div class="msg-body">
                 <div class="bubble" v-html="fmt(m.content)"></div>
                 <span class="time">{{ m.time }}</span>
@@ -256,7 +398,7 @@ function toggleCodePane() {
         </div>
 
         <Transition name="fade">
-          <button v-if="!atBottom" class="scroll-fab" @click="scrollDown">↓</button>
+          <button v-if="!atBottom" class="scroll-fab" @click="scrollDown">v</button>
         </Transition>
 
         <Transition name="fade">
@@ -272,12 +414,12 @@ function toggleCodePane() {
             ref="taEl"
             v-model="input"
             rows="1"
-            placeholder="Javob yoz..."
+            placeholder="Signal yoz..."
             @keydown="onKeydown"
             @input="autoGrow"
           ></textarea>
           <button class="btn-primary send-btn" :disabled="sending || !input.trim()" @click="send()">
-            <span>Yuborish</span>
+            Yuborish
           </button>
         </div>
 
@@ -285,51 +427,90 @@ function toggleCodePane() {
           <div class="finish-btns">
             <button v-if="confirming" class="btn-ghost" :disabled="grading" @click="confirming = false">Bekor</button>
             <button class="btn-primary finish-btn" :disabled="grading || userTurns === 0" @click="finishClick">
-              {{ grading ? 'Baholanmoqda…' : confirming ? 'Ha, bahola' : 'Yakunlash va baho olish' }}
+              {{ grading ? 'Baholanmoqda...' : confirming ? 'Ha, bahola' : 'Yakunlash va baho olish' }}
             </button>
           </div>
         </div>
       </section>
 
-      <aside class="terminal-pane" :class="{ open: codeOpen }" aria-label="Code pane">
-        <div class="terminal-head">
+      <button
+        v-if="hasCodeChallenge"
+        class="split-resizer"
+        aria-label="Resize chat and IDE"
+        @pointerdown="startResize"
+      ></button>
+
+      <aside v-if="hasCodeChallenge" class="ide-pane" :class="{ open: codeOpen }" aria-label="Code IDE">
+        <div class="ide-head">
           <div>
-            <div class="kicker">Terminal</div>
+            <div class="kicker">AI Simulator IDE</div>
             <div class="terminal-title">{{ scenario.code_language || 'python' }} challenge</div>
           </div>
-          <div class="terminal-tools">
-            <button class="btn-ghost small" :disabled="!codeUnlocked" @click="resetCode">Reset</button>
-            <button class="btn-ghost small" @click="toggleCodePane">Close</button>
+          <div class="ide-status">
+            <span class="status-dot" :class="{ bad: errorCount, warn: !errorCount && warningCount }"></span>
+            <span>{{ errorCount }} errors</span>
+            <span>{{ warningCount }} warnings</span>
           </div>
         </div>
 
-        <div v-if="scenario.code_challenge && (scenario.code_challenge.buggy_code || scenario.code_challenge.tests)" class="code-card">
-          <div v-if="!codeUnlocked" class="code-locked">
-            Code challenge {{ scenario.code_challenge_after_round }}-roundda ochiladi.
-          </div>
-          <template v-else>
-            <div class="editor-actions">
-              <span class="language-chip">Python</span>
-              <button class="btn-primary" :disabled="sandboxing || !studentCode.trim()" @click="runSandbox('run')">
-                {{ sandboxing ? 'Running…' : 'Yurish' }}
-              </button>
-              <button class="btn-primary" :disabled="sandboxing || !studentCode.trim()" @click="runSandbox('submit')">
-                Yuborish
-              </button>
+        <div v-if="!codeUnlocked" class="code-locked">
+          Code challenge {{ scenario.code_challenge_after_round }}-roundda ochiladi.
+        </div>
+
+        <template v-else>
+          <div class="editor-toolbar">
+            <div class="select-like">
+              <span class="lang-mark">PY</span>
+              <span>Python</span>
             </div>
+            <div class="select-like">Aa {{ 16 }}px</div>
+            <button class="btn-ghost small" @click="resetCode">Qayta boshlash</button>
+            <button class="btn-primary small run" :disabled="sandboxing || !studentCode.trim()" @click="runSandbox('run')">
+              > Yuritish
+            </button>
+            <button class="btn-primary small submit" :disabled="sandboxing || !studentCode.trim()" @click="runSandbox('submit')">
+              Yuborish
+            </button>
+          </div>
 
-            <textarea
-              v-model="studentCode"
-              class="code-input"
-              rows="13"
-              :placeholder="scenario.code_language || 'python'"
-            ></textarea>
+          <div class="editor-shell">
+            <div class="gutter" ref="gutterEl">
+              <div v-for="line in codeLines" :key="line" class="line-no" :class="lineClass(line)">
+                {{ line }}
+              </div>
+            </div>
+            <div class="code-layer">
+              <pre ref="codeOverlayEl" class="code-highlight" v-html="highlightedCode"></pre>
+              <textarea
+                ref="codeTaEl"
+                v-model="studentCode"
+                class="code-input"
+                spellcheck="false"
+                :placeholder="scenario.code_language || 'python'"
+                @scroll="syncCodeScroll"
+              ></textarea>
+            </div>
+          </div>
 
+          <div class="diagnostics-strip">
+            <span v-if="diagnostics.length === 0" class="diag-ok">No local syntax errors</span>
+            <button
+              v-for="d in diagnostics.slice(0, 4)"
+              :key="`${d.line}-${d.message}`"
+              class="diag-pill"
+              :class="d.type"
+              @click="codeTaEl?.focus()"
+            >
+              L{{ d.line }} {{ d.message }}
+            </button>
+          </div>
+
+          <div class="console-panel">
             <div class="test-tabs">
               <span class="active">Testlar</span>
               <span>Natijalar</span>
+              <span>Console</span>
             </div>
-
             <div class="console-grid">
               <div>
                 <div class="test-title">Test case</div>
@@ -347,21 +528,18 @@ function toggleCodePane() {
                   <span>exit {{ sandboxResult.exit_code }}</span>
                   <span>{{ sandboxResult.duration_ms }}ms</span>
                 </div>
-                <pre v-if="sandboxResult?.stderr" class="code-tests">{{ sandboxResult.stderr }}</pre>
+                <pre v-if="sandboxResult?.stderr" class="code-tests error-out">{{ sandboxResult.stderr }}</pre>
                 <pre v-if="sandboxResult?.stdout" class="code-tests">{{ sandboxResult.stdout }}</pre>
               </div>
             </div>
+          </div>
 
-            <details v-if="scenario.code_challenge.buggy_code" class="buggy-block">
-              <summary>Broken code</summary>
-              <pre class="code-tests">{{ scenario.code_challenge.buggy_code }}</pre>
-            </details>
-            <div v-if="scenario.code_challenge.hint" class="code-hint">{{ scenario.code_challenge.hint }}</div>
-          </template>
-        </div>
-        <div v-else class="empty terminal-empty">
-          Code challenge yo'q. Chatga fokus qil.
-        </div>
+          <details v-if="scenario.code_challenge.buggy_code" class="buggy-block">
+            <summary>Broken code</summary>
+            <pre class="code-tests">{{ scenario.code_challenge.buggy_code }}</pre>
+          </details>
+          <div v-if="scenario.code_challenge.hint" class="code-hint">{{ scenario.code_challenge.hint }}</div>
+        </template>
       </aside>
     </div>
   </div>
@@ -374,100 +552,57 @@ function toggleCodePane() {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 14px;
 }
 .kicker {
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text-dim);
-  font-weight: 800;
+  letter-spacing: .08em;
+  color: var(--accent);
+  font-weight: 900;
 }
 h3 {
   margin: 4px 0 0;
   font-size: 20px;
   line-height: 1.15;
 }
-.meta-pill {
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: var(--panel-2);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  font-size: 12px;
-  white-space: nowrap;
-}
 .split {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: minmax(360px, var(--chat-width)) 8px minmax(420px, 1fr);
   border: 1px solid var(--border-strong);
   background: var(--panel);
   border-radius: var(--radius);
   overflow: hidden;
 }
+.sim-shell:not(.code-open) .split {
+  grid-template-columns: minmax(0, 1fr);
+}
+.sim-shell:not(.code-open) .split-resizer,
+.sim-shell:not(.code-open) .ide-pane {
+  display: none;
+}
 .chat-pane,
-.terminal-pane {
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  display: flex;
-  flex-direction: column;
+.ide-pane {
   min-height: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   position: relative;
 }
 .chat-head,
-.terminal-head {
+.ide-head {
+  min-height: 74px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
   padding: 14px 16px;
   border-bottom: 1px solid var(--border-strong);
-  background: var(--panel-2);
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
 }
-.terminal-pane {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: min(460px, 92vw);
-  border-left: 1px solid var(--border-strong);
-  background: linear-gradient(180deg, var(--panel-2), var(--bg-soft));
-  box-shadow: -24px 0 60px rgba(0, 0, 0, .28);
-  transform: translateX(102%);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform .22s ease, opacity .22s ease;
-  z-index: 3;
-}
-.terminal-pane.open {
-  transform: translateX(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-.drawer-backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border: 0;
-  border-radius: var(--radius);
-  background: rgba(8, 10, 8, .42);
-  backdrop-filter: blur(2px);
-}
-.terminal-tools {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.terminal-title,
-.chat-head-title {
-  font-weight: 800;
-  font-size: 15px;
-}
-.chat-tools {
+.chat-tools,
+.ide-status {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -476,14 +611,55 @@ h3 {
 }
 .chat-tools select {
   min-width: 170px;
-  padding: 8px 10px;
+  padding: 9px 10px;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--panel-2);
   color: var(--text);
 }
-.code-toggle {
+.meta-pill,
+.ide-status {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 12px;
   white-space: nowrap;
+}
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--good);
+  box-shadow: 0 0 16px rgba(124, 207, 150, .8);
+}
+.status-dot.bad {
+  background: var(--bad);
+  box-shadow: 0 0 16px rgba(227, 138, 124, .75);
+}
+.status-dot.warn {
+  background: var(--warn);
+  box-shadow: 0 0 16px rgba(224, 181, 108, .7);
+}
+.split-resizer {
+  width: 8px;
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, transparent, var(--border-strong), transparent),
+    var(--bg-soft);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  cursor: col-resize;
+}
+.split-resizer:hover {
+  background:
+    linear-gradient(180deg, transparent, var(--accent), transparent),
+    var(--panel-2);
+}
+.terminal-title {
+  font-weight: 900;
+  font-size: 15px;
 }
 .stream {
   flex: 1;
@@ -495,23 +671,41 @@ h3 {
   gap: 16px;
   scroll-behavior: smooth;
 }
-.msg { display: flex; gap: 10px; max-width: 84%; }
-.msg.user { align-self: flex-end; flex-direction: row-reverse; }
-.msg-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.msg.user .msg-body { align-items: flex-end; }
+.msg {
+  display: flex;
+  gap: 10px;
+  max-width: 90%;
+}
+.msg.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+.msg-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.msg.user .msg-body {
+  align-items: flex-end;
+}
 .avatar {
   flex: none;
-  width: 34px; height: 34px;
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
-  display: grid; place-items: center;
-  font-size: 11px; font-weight: 800;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 900;
   background: var(--panel-2);
   border: 1px solid var(--border);
   color: var(--text-dim);
 }
 .msg.user .avatar {
   background: var(--ink);
-  color: var(--paper); border-color: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
 }
 .bubble {
   background: var(--panel-2);
@@ -528,18 +722,31 @@ h3 {
   border-color: var(--success-border);
 }
 .bubble :deep(code) {
-  background: var(--panel-2);
+  background: var(--bg-soft);
   border: 1px solid var(--border);
   padding: 1px 6px;
   border-radius: 5px;
   font-size: 13px;
   font-family: var(--mono);
 }
-.bubble :deep(strong) { color: var(--ink); }
-.time { font-size: 11px; color: var(--text-dim); padding: 0 4px; }
-.typing { display: flex; gap: 5px; align-items: center; padding: 16px 15px; }
+.bubble :deep(strong) {
+  color: var(--accent);
+}
+.time {
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 0 4px;
+}
+.typing {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 16px 15px;
+}
 .typing span {
-  width: 7px; height: 7px; border-radius: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
   background: var(--text-dim);
   animation: blink 1.2s infinite ease-in-out;
 }
@@ -550,7 +757,8 @@ h3 {
   position: absolute;
   right: 18px;
   bottom: 145px;
-  width: 38px; height: 38px;
+  width: 38px;
+  height: 38px;
   border-radius: 8px;
   background: var(--panel-2);
   border: 1px solid var(--border);
@@ -572,7 +780,12 @@ h3 {
   padding: 8px 13px;
   border-radius: 8px;
 }
-.chat-error { color: var(--bad); font-size: 13px; padding: 8px 18px 0; margin: 0; }
+.chat-error {
+  color: var(--bad);
+  font-size: 13px;
+  padding: 8px 18px 0;
+  margin: 0;
+}
 .composer {
   display: flex;
   gap: 10px;
@@ -590,26 +803,26 @@ h3 {
   max-height: 140px;
   overflow-y: auto;
 }
-.send-btn { padding: 12px 20px; height: 46px; }
+.send-btn {
+  padding: 12px 20px;
+  height: 46px;
+}
 .finish-zone {
   padding: 0 16px 14px;
   background: var(--bg-soft);
-  border-top: 0;
 }
-.finish-btns { display: flex; gap: 10px; }
-.finish-btn { flex: 1; }
-.terminal-pane {
-  padding-bottom: 0;
-}
-.code-card {
-  padding: 14px;
+.finish-btns {
   display: flex;
-  flex-direction: column;
   gap: 10px;
-  min-height: 0;
-  overflow: auto;
+}
+.finish-btn {
+  flex: 1;
+}
+.ide-pane {
+  background: var(--bg);
 }
 .code-locked {
+  margin: 16px;
   padding: 18px;
   border-radius: 8px;
   background: var(--panel);
@@ -617,38 +830,181 @@ h3 {
   color: var(--text-dim);
   font-size: 14px;
 }
-.code-input {
-  min-height: 320px;
-  width: 100%;
-  resize: vertical;
+.editor-toolbar {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto auto;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  align-items: center;
+}
+.select-like {
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  font-weight: 800;
+  font-size: 13px;
+}
+.lang-mark {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  color: #101210;
+  background: var(--accent-2);
+  font-size: 11px;
+}
+.small {
+  padding: 9px 12px;
+  font-size: 13px;
+  min-height: 40px;
+}
+.run,
+.submit {
+  min-width: 104px;
+}
+.submit {
+  background: #08351f;
+  border-color: rgba(124, 207, 150, .5);
+  color: #98f2b4;
+}
+.editor-shell {
+  flex: 1;
+  min-height: 250px;
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  background: #0c0f0d;
+  border-bottom: 1px solid var(--border);
+}
+.gutter {
+  overflow: hidden;
+  padding: 14px 0;
+  background: #111511;
+  border-right: 1px solid #263027;
+  color: #7c867c;
   font-family: var(--mono);
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.65;
+  text-align: right;
+}
+.line-no {
+  height: 23.1px;
+  padding-right: 12px;
+  position: relative;
+}
+.line-no.has-error {
+  color: var(--bad);
+}
+.line-no.has-warning {
+  color: var(--warn);
+}
+.line-no.has-error::after,
+.line-no.has-warning::after {
+  content: '';
+  position: absolute;
+  right: 4px;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.code-layer {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+.code-highlight,
+.code-input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: 0;
+  overflow: auto;
+  white-space: pre;
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.65;
+  tab-size: 4;
+}
+.code-highlight {
+  pointer-events: none;
+  color: #dbe5d6;
+  background:
+    linear-gradient(90deg, rgba(125, 184, 163, .06) 1px, transparent 1px),
+    #0c0f0d;
+  background-size: 80px 100%;
+}
+.code-input {
+  resize: none;
+  background: transparent;
+  color: transparent;
+  caret-color: #f2eee4;
+  -webkit-text-fill-color: transparent;
+}
+.code-input::selection {
+  background: rgba(125, 184, 163, .35);
+}
+.code-highlight :deep(.tok-keyword) { color: #7db8ff; font-weight: 800; }
+.code-highlight :deep(.tok-string) { color: #e0b56c; }
+.code-highlight :deep(.tok-number) { color: #cb855f; }
+.code-highlight :deep(.tok-comment) { color: #75a36f; }
+.diagnostics-strip {
+  min-height: 42px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  overflow-x: auto;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.diag-ok,
+.diag-pill {
+  flex: none;
+  font-size: 12px;
+  border-radius: 999px;
+  padding: 7px 10px;
+}
+.diag-ok {
+  color: var(--good);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+}
+.diag-pill {
+  border: 1px solid var(--border);
   background: var(--panel-2);
   color: var(--text);
 }
-.editor-actions {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 10px;
-  align-items: center;
+.diag-pill.error {
+  color: var(--danger-text);
+  background: var(--danger-bg);
+  border-color: var(--danger-border);
 }
-.small {
-  padding: 8px 12px;
-  font-size: 13px;
+.diag-pill.warning {
+  color: var(--warn);
+  border-color: rgba(224, 181, 108, .35);
 }
-.language-chip {
-  justify-self: start;
-  padding: 9px 11px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--panel);
-  font-weight: 800;
-  font-size: 13px;
+.console-panel {
+  max-height: 250px;
+  overflow: auto;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--border);
 }
 .test-tabs {
   display: flex;
   gap: 6px;
+  padding: 10px 12px 0;
   border-bottom: 1px solid var(--border);
 }
 .test-tabs span {
@@ -669,13 +1025,14 @@ h3 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  padding: 12px;
 }
 .test-title {
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: .6px;
+  letter-spacing: .06em;
   color: var(--text-dim);
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 10px;
 }
 .code-tests,
@@ -706,9 +1063,13 @@ h3 {
   font-size: 12px;
   color: var(--text-dim);
 }
-.sandbox-meta .good { color: var(--good); font-weight: 700; }
-.sandbox-meta .bad { color: var(--bad); font-weight: 700; }
+.sandbox-meta .good { color: var(--good); font-weight: 800; }
+.sandbox-meta .bad { color: var(--bad); font-weight: 800; }
+.error-out {
+  color: var(--danger-text);
+}
 .buggy-block {
+  margin: 10px 12px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -721,50 +1082,84 @@ h3 {
   margin-bottom: 8px;
 }
 .code-hint {
-  margin-top: 2px;
+  margin: 0 12px 12px;
   font-size: 13px;
   color: var(--accent);
   line-height: 1.5;
 }
-.terminal-empty {
-  margin: 16px;
+
+@media (max-width: 1100px) {
+  .split {
+    grid-template-columns: minmax(330px, var(--chat-width)) 8px minmax(360px, 1fr);
+  }
+  .console-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 900px) {
-  .split { border: 0; background: transparent; }
+  .split {
+    display: flex;
+    border: 0;
+    background: transparent;
+  }
   .chat-pane,
-  .terminal-pane {
+  .ide-pane {
+    width: 100%;
     border: 1px solid var(--border-strong);
     border-radius: var(--radius);
     background: var(--panel);
   }
-  .terminal-pane { width: min(100%, 92vw); }
-  .msg { max-width: 92%; }
-  .console-grid { grid-template-columns: 1fr; }
-  .scroll-fab { bottom: 140px; }
-  .chat-tools select {
-    min-width: 0;
-    flex: 1 1 170px;
+  .split-resizer {
+    display: none;
   }
-  .code-toggle {
-    flex: 1 1 120px;
+  .ide-pane {
+    display: none;
+  }
+  .code-open .chat-pane {
+    display: none;
+  }
+  .code-open .ide-pane {
+    display: flex;
+  }
+  .msg {
+    max-width: 94%;
   }
 }
 
 @media (max-width: 560px) {
-  .chat-head { align-items: stretch; flex-direction: column; }
-  .chat-tools { justify-content: space-between; }
-  .composer { flex-direction: column; align-items: stretch; }
-  .send-btn { width: 100%; }
-  .editor-actions { grid-template-columns: 1fr; }
-  .editor-actions .btn-primary { width: 100%; }
-  .code-input { min-height: 260px; }
-  .terminal-pane {
-    width: 100%;
-    border-left: 0;
+  .chat-head,
+  .ide-head {
+    align-items: stretch;
+    flex-direction: column;
   }
-  .drawer-backdrop {
-    border-radius: 0;
+  .chat-tools {
+    justify-content: space-between;
+  }
+  .chat-tools select,
+  .code-toggle {
+    min-width: 0;
+    flex: 1 1 140px;
+  }
+  .composer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .send-btn {
+    width: 100%;
+  }
+  .editor-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+  .editor-toolbar .small {
+    width: 100%;
+  }
+  .editor-shell {
+    min-height: 330px;
+  }
+  .run,
+  .submit {
+    min-width: 0;
   }
 }
 </style>

@@ -1,23 +1,23 @@
 :root {
   color-scheme: dark;
-  --bg: #101210;
-  --bg-soft: #151815;
-  --panel: #1a1d1b;
-  --panel-2: #212522;
-  --paper: #f2eee4;
-  --ink: #0e100f;
-  --border: #313731;
-  --border-strong: #505b52;
-  --text: #e8e4d8;
-  --text-dim: #a6ad9d;
-  --accent: #7db8a3;
-  --accent-2: #cb855f;
-  --good: #7ccf96;
-  --warn: #e0b56c;
-  --bad: #e38a7c;
+  --bg: #0b0f10;
+  --bg-soft: #111718;
+  --panel: #151b1d;
+  --panel-2: #1d2528;
+  --paper: #f4f0e8;
+  --ink: #08231f;
+  --border: #2b383b;
+  --border-strong: #3f5256;
+  --text: #e9efec;
+  --text-dim: #9eaba8;
+  --accent: #64d8c0;
+  --accent-2: #f0a35d;
+  --good: #77dda1;
+  --warn: #e6bd66;
+  --bad: #ff8f7e;
   --radius: 10px;
-  --shadow: 0 18px 60px rgba(0, 0, 0, .22);
-  --font: 'Aptos', 'Bahnschrift', 'Segoe UI', sans-serif;
+  --shadow: 0 18px 60px rgba(0, 0, 0, .26);
+  --font: 'Bahnschrift', 'Aptos', 'Segoe UI', sans-serif;
   --mono: 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
   --danger-bg: rgba(227, 138, 124, .11);
   --danger-border: rgba(227, 138, 124, .38);
@@ -30,22 +30,22 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --bg: #101210;
-    --bg-soft: #151815;
-    --panel: #1a1d1b;
-    --panel-2: #212522;
-    --paper: #f2eee4;
-    --ink: #0e100f;
-    --border: #313731;
-    --border-strong: #505b52;
-    --text: #e8e4d8;
-    --text-dim: #a6ad9d;
-    --accent: #7db8a3;
-    --accent-2: #cb855f;
-    --good: #7ccf96;
-    --warn: #e0b56c;
-    --bad: #e38a7c;
-    --shadow: 0 18px 60px rgba(0, 0, 0, .22);
+    --bg: #0b0f10;
+    --bg-soft: #111718;
+    --panel: #151b1d;
+    --panel-2: #1d2528;
+    --paper: #f4f0e8;
+    --ink: #08231f;
+    --border: #2b383b;
+    --border-strong: #3f5256;
+    --text: #e9efec;
+    --text-dim: #9eaba8;
+    --accent: #64d8c0;
+    --accent-2: #f0a35d;
+    --good: #77dda1;
+    --warn: #e6bd66;
+    --bad: #ff8f7e;
+    --shadow: 0 18px 60px rgba(0, 0, 0, .26);
     --danger-bg: rgba(227, 138, 124, .11);
     --danger-border: rgba(227, 138, 124, .38);
     --danger-text: #f6d0cb;
@@ -57,22 +57,22 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #101210;
-  --bg-soft: #151815;
-  --panel: #1a1d1b;
-  --panel-2: #212522;
-  --paper: #f2eee4;
-  --ink: #0e100f;
-  --border: #313731;
-  --border-strong: #505b52;
-  --text: #e8e4d8;
-  --text-dim: #a6ad9d;
-  --accent: #7db8a3;
-  --accent-2: #cb855f;
-  --good: #7ccf96;
-  --warn: #e0b56c;
-  --bad: #e38a7c;
-  --shadow: 0 18px 60px rgba(0, 0, 0, .22);
+  --bg: #0b0f10;
+  --bg-soft: #111718;
+  --panel: #151b1d;
+  --panel-2: #1d2528;
+  --paper: #f4f0e8;
+  --ink: #08231f;
+  --border: #2b383b;
+  --border-strong: #3f5256;
+  --text: #e9efec;
+  --text-dim: #9eaba8;
+  --accent: #64d8c0;
+  --accent-2: #f0a35d;
+  --good: #77dda1;
+  --warn: #e6bd66;
+  --bad: #ff8f7e;
+  --shadow: 0 18px 60px rgba(0, 0, 0, .26);
   --danger-bg: rgba(227, 138, 124, .11);
   --danger-border: rgba(227, 138, 124, .38);
   --danger-text: #f6d0cb;
@@ -116,10 +116,10 @@ html, body, #app {
 
 body {
   background:
-    radial-gradient(circle at top left, rgba(125, 184, 163, .08), transparent 35%),
-    radial-gradient(circle at top right, rgba(203, 133, 95, .08), transparent 28%),
-    linear-gradient(90deg, rgba(255, 255, 255, .03) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(255, 255, 255, .03) 1px, transparent 1px),
+    linear-gradient(135deg, rgba(100, 216, 192, .12), transparent 32%),
+    linear-gradient(315deg, rgba(240, 163, 93, .11), transparent 30%),
+    linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, .035) 1px, transparent 1px),
     var(--bg);
   background-size: auto, auto, 28px 28px, 28px 28px, auto;
   color: var(--text);
@@ -136,6 +136,10 @@ button {
 }
 button:active { transform: translateY(1px); }
 button:disabled { opacity: .5; cursor: not-allowed; }
+body.is-resizing-pane {
+  cursor: col-resize;
+  user-select: none;
+}
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
@@ -150,9 +154,9 @@ select:focus-visible {
   font-weight: 800;
   padding: 12px 18px;
   font-size: 15px;
-  border: 1px solid var(--ink);
+  border: 1px solid rgba(100, 216, 192, .35);
 }
-.btn-primary:hover:not(:disabled) { background: #1d211d; }
+.btn-primary:hover:not(:disabled) { background: #0e342f; }
 
 .btn-ghost {
   background: var(--panel-2);
@@ -160,7 +164,7 @@ select:focus-visible {
   padding: 10px 16px;
   border: 1px solid var(--border);
 }
-.btn-ghost:hover:not(:disabled) { background: #2a2e2b; border-color: var(--border-strong); }
+.btn-ghost:hover:not(:disabled) { background: #263134; border-color: var(--border-strong); }
 
 input, textarea {
   font-family: inherit;

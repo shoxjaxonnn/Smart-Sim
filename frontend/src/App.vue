@@ -33,7 +33,6 @@ onBeforeUnmount(() => {
         <span class="logo">SS</span>
         <div>
           <div class="brand-name">Smart Sim</div>
-          <div class="brand-sub">Uzbek AI simulation lab</div>
         </div>
       </div>
       <nav class="nav">
@@ -54,7 +53,7 @@ onBeforeUnmount(() => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 1720px;
+  max-width: 1800px;
   margin: 0 auto;
   padding: 0 18px 18px;
 }
@@ -73,12 +72,14 @@ onBeforeUnmount(() => {
   font-size: 13px;
   font-weight: 800;
   border-radius: 8px;
-  background: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(100, 216, 192, .18), transparent),
+    var(--ink);
   color: var(--paper);
-  border: 1px solid var(--ink);
+  border: 1px solid rgba(100, 216, 192, .38);
   box-shadow: var(--shadow);
 }
-.brand-name { font-size: 18px; font-weight: 800; }
+.brand-name { font-size: 18px; font-weight: 900; letter-spacing: 0; }
 .brand-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
 
 .nav {
@@ -97,7 +98,7 @@ onBeforeUnmount(() => {
 .nav-btn.active {
   color: var(--paper);
   background: var(--ink);
-  border-color: var(--ink);
+  border-color: rgba(100, 216, 192, .38);
   box-shadow: var(--shadow);
 }
 

@@ -80,7 +80,7 @@ function sameSubject(a, b) {
     <div class="student-head">
       <div>
         <div class="kicker">Student panel</div>
-        <h2>Chat-first simulation</h2>
+        <h2>AI simulation workspace</h2>
       </div>
       <div class="right">
         <span class="pill" :class="backendOnline ? 'pill-good' : 'pill-bad'">
@@ -180,6 +180,7 @@ function sameSubject(a, b) {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  padding: 10px 2px 2px;
 }
 .kicker {
   font-size: 11px;
@@ -190,7 +191,8 @@ function sameSubject(a, b) {
 }
 h2 {
   margin: 6px 0 0;
-  font-size: 22px;
+  font-size: 24px;
+  letter-spacing: 0;
 }
 .right {
   display: flex;
@@ -202,7 +204,9 @@ h2 {
   justify-content: space-between;
   gap: 14px;
   align-items: center;
-  background: linear-gradient(160deg, var(--panel-2), var(--panel));
+  background:
+    linear-gradient(90deg, rgba(100, 216, 192, .12), transparent 42%),
+    linear-gradient(160deg, var(--panel-2), var(--panel));
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px 16px;
@@ -260,11 +264,13 @@ h2 {
 }
 .scenario-card {
   text-align: left;
-  background: linear-gradient(160deg, var(--panel-2), var(--panel));
+  background:
+    linear-gradient(180deg, rgba(100, 216, 192, .05), transparent),
+    linear-gradient(160deg, var(--panel-2), var(--panel));
   border: 1px solid var(--border);
   color: var(--text);
   padding: 14px;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: var(--shadow);
 }
 .scenario-card.active {

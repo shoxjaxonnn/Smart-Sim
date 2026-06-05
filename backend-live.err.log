@@ -1,4 +1,1 @@
-2026/06/05 12:03:55 LLM provider: Mock (set GEMINI_API_KEY to use Gemini)
-2026/06/05 12:03:56 warning: load scenarios: no scenarios loaded from scenarios
-2026/06/05 12:03:56 Smart Edu backend on http://localhost:8080
-2026/06/05 12:03:56 listen tcp :8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+2026/06/05 14:52:01 Smart Edu backend on http://localhost:8080
