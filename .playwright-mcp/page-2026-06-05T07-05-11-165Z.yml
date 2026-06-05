@@ -1,0 +1,62 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SS
+      - generic [ref=e7]:
+        - generic [ref=e8]: Smart Sim
+        - generic [ref=e9]: Uzbek AI simulation lab
+    - navigation [ref=e10]:
+      - button "Student" [ref=e11] [cursor=pointer]
+      - button "Teacher" [ref=e12] [cursor=pointer]
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: Teacher panel
+          - heading "DOCX upload → AI draft → approve" [level=2] [ref=e18]
+        - button "Refresh" [ref=e19] [cursor=pointer]
+      - paragraph [ref=e20]: HTTP 404
+      - generic [ref=e21]:
+        - generic [ref=e22]: Upload document
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - generic [ref=e25]: DOCX file
+            - button "DOCX file" [ref=e26]
+          - generic [ref=e27]:
+            - generic [ref=e28]: Title
+            - textbox "Title" [ref=e29]:
+              - /placeholder: Ko'paytma array
+          - generic [ref=e30]:
+            - generic [ref=e31]: Subject
+            - textbox "Subject" [ref=e32]:
+              - /placeholder: IT / Web Security
+              - text: IT / Web Security
+          - generic [ref=e33]:
+            - generic [ref=e34]: Language
+            - textbox "Language" [ref=e35]:
+              - /placeholder: uz
+              - text: uz
+          - generic [ref=e36]:
+            - generic [ref=e37]: Code language
+            - textbox "Code language" [ref=e38]:
+              - /placeholder: python
+              - text: python
+          - generic [ref=e39]:
+            - generic [ref=e40]: Problem focus
+            - textbox "Problem focus" [ref=e41]:
+              - /placeholder: Broken login flow
+        - generic [ref=e42]:
+          - generic [ref=e43]: Teacher instruction
+          - textbox "Teacher instruction" [ref=e44]:
+            - /placeholder: "AIga aniq nima qilishni yoz. Masalan: shu DOCXdagi mavzudan SQL injection senariysi yarat."
+        - button "Upload DOCX" [ref=e46] [cursor=pointer]
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]: Documents
+          - generic [ref=e50]: Hali document yo'q. DOCX yukla.
+        - generic [ref=e51]:
+          - generic [ref=e52]: Scenario editor
+          - generic [ref=e53]: Document dan draft chiqardi. Yoki old draft ni tanla.
+      - generic [ref=e55]:
+        - generic [ref=e56]: Scenarios
+        - generic [ref=e57]: Hali scenario yo'q.

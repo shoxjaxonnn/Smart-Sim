@@ -121,6 +121,24 @@ func (g *Gemini) call(ctx context.Context, body gRequest) (*gResponse, error) {
 	return &out, nil
 }
 
+type geminiScenarioDraftWire struct {
+	Title     string `json:"title"`
+	Subject   string `json:"subject"`
+	Language  string `json:"language"`
+	Situation string `json:"situation"`
+	Facts     []struct {
+		Key   string `json:"key"`
+		Value string `json:"value"`
+	} `json:"facts"`
+	Rubric                  []Criterion `json:"rubric"`
+	ModelAnswer             string      `json:"model_answer"`
+	BuggyCode               string      `json:"buggy_code"`
+	Hint                    string      `json:"hint"`
+	Tests                   string      `json:"tests"`
+	CodeChallengeAfterRound int         `json:"code_challenge_after_round"`
+	CodeLanguage            string      `json:"code_language"`
+}
+
 // Chat runs the conversation with the get_fact tool wired in. The model can
 // only obtain scenario numbers by calling get_fact; code answers it from the
 // FactsStore so the model can never fabricate a value (spec 3.1).
@@ -270,5 +288,114 @@ Return one criterion object per rubric line, with an honest justification.`, max
 	if out.MaxScore == 0 {
 		out.MaxScore = maxTotal
 	}
+	return out, nil
+}
+
+func (g *Gemini) GenerateScenario(ctx context.Context, req ScenarioDraftRequest) (ScenarioDraft, error) {
+	var out ScenarioDraft
+	var wire geminiScenarioDraftWire
+	if req.CodeLanguage == "" {
+		req.CodeLanguage = "python"
+	}
+
+	prompt := fmt.Sprintf(`Create one concise teacher draft for a hackathon MVP.
+Return only JSON that matches the schema.
+
+RULES:
+- Keep the situation short and concrete.
+- Include 3-4 factual keys.
+- Rubric should have exactly 3 criteria.
+- Buggy code must have one obvious bug relevant to the lesson.
+- Tests must be Python assert lines.
+- Use the student's language from the request when possible.
+- If document text is provided, use it as source truth. Do not invent extra lesson context beyond it.
+
+REQUEST:
+Title: %s
+Subject: %s
+Language: %s
+Code language: %s
+Problem focus: %s
+Source document: %s
+Teacher instruction: %s
+Lesson context:
+%s`, req.Title, req.Subject, req.Language, req.CodeLanguage, req.ProblemFocus, req.SourceDocumentName, req.TeacherInstruction, req.DocumentText)
+
+	schema := map[string]interface{}{
+		"type": "object",
+		"properties": map[string]interface{}{
+			"title":     map[string]interface{}{"type": "string"},
+			"subject":   map[string]interface{}{"type": "string"},
+			"language":  map[string]interface{}{"type": "string"},
+			"situation": map[string]interface{}{"type": "string"},
+			"facts": map[string]interface{}{
+				"type": "array",
+				"items": map[string]interface{}{
+					"type": "object",
+					"properties": map[string]interface{}{
+						"key":   map[string]interface{}{"type": "string"},
+						"value": map[string]interface{}{"type": "string"},
+					},
+					"required": []string{"key", "value"},
+				},
+			},
+			"rubric": map[string]interface{}{
+				"type": "array",
+				"items": map[string]interface{}{
+					"type": "object",
+					"properties": map[string]interface{}{
+						"name":     map[string]interface{}{"type": "string"},
+						"max":      map[string]interface{}{"type": "integer"},
+						"keywords": map[string]interface{}{"type": "array", "items": map[string]interface{}{"type": "string"}},
+					},
+					"required": []string{"name", "max", "keywords"},
+				},
+			},
+			"model_answer":               map[string]interface{}{"type": "string"},
+			"buggy_code":                 map[string]interface{}{"type": "string"},
+			"hint":                       map[string]interface{}{"type": "string"},
+			"tests":                      map[string]interface{}{"type": "string"},
+			"code_challenge_after_round": map[string]interface{}{"type": "integer"},
+			"code_language":              map[string]interface{}{"type": "string"},
+		},
+		"required": []string{"title", "subject", "language", "situation", "facts", "rubric", "model_answer", "buggy_code", "hint", "tests", "code_challenge_after_round", "code_language"},
+	}
+
+	resp, err := g.call(ctx, gRequest{
+		Contents: []gContent{{Role: "user", Parts: []gPart{{Text: prompt}}}},
+		GenerationConfig: &gGenConfig{
+			ResponseMimeType: "application/json",
+			ResponseSchema:   schema,
+			Temperature:      0.5,
+		},
+	})
+	if err != nil {
+		return out, err
+	}
+	if len(resp.Candidates) == 0 || len(resp.Candidates[0].Content.Parts) == 0 {
+		return out, fmt.Errorf("gemini scenario: empty response")
+	}
+	text := resp.Candidates[0].Content.Parts[0].Text
+	if err := json.Unmarshal([]byte(text), &wire); err != nil {
+		return out, fmt.Errorf("parse scenario json: %w (raw: %s)", err, text)
+	}
+	out.Title = wire.Title
+	out.Subject = wire.Subject
+	out.Language = wire.Language
+	out.Situation = wire.Situation
+	out.Facts = make(map[string]string, len(wire.Facts))
+	for _, f := range wire.Facts {
+		if strings.TrimSpace(f.Key) == "" {
+			continue
+		}
+		out.Facts[strings.TrimSpace(f.Key)] = f.Value
+	}
+	out.Rubric = wire.Rubric
+	out.ModelAnswer = wire.ModelAnswer
+	out.BuggyCode = wire.BuggyCode
+	out.Hint = wire.Hint
+	out.Tests = wire.Tests
+	out.CodeChallengeAfterRound = wire.CodeChallengeAfterRound
+	out.CodeLanguage = wire.CodeLanguage
 	return out, nil
 }

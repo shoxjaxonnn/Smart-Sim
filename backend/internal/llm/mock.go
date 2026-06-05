@@ -63,3 +63,53 @@ func (m *Mock) Grade(ctx context.Context, modelAnswer, studentAnswer string, rub
 	}
 	return res, nil
 }
+
+func (m *Mock) GenerateScenario(ctx context.Context, req ScenarioDraftRequest) (ScenarioDraft, error) {
+	title := req.Title
+	if title == "" {
+		title = "Shubhali tizim xatosi"
+	}
+	subject := req.Subject
+	if subject == "" {
+		subject = "IT / Web Security"
+	}
+	codeLang := req.CodeLanguage
+	if codeLang == "" {
+		codeLang = "python"
+	}
+	lc := strings.ToLower(req.LessonContext + " " + req.ProblemFocus + " " + req.TeacherInstruction + " " + req.DocumentText)
+	draft := ScenarioDraft{
+		Title:     title,
+		Subject:   subject,
+		Language:  req.Language,
+		Situation: "Tizimda nosozlik kuzatildi. Talaba muammoni aniqlab, kodni tuzatishi kerak.",
+		Facts: map[string]string{
+			"server.error_log": "Error: unexpected token near '--' in query",
+			"db.table":         "users",
+			"login.field":      "username",
+			"server.cpu":       "94%",
+		},
+		Rubric: []Criterion{
+			{Name: "Muammoni aniqladi", Max: 3, Keywords: []string{"sql injection", "injeksiya"}},
+			{Name: "Sababni tushuntirdi", Max: 4, Keywords: []string{"validatsiya", "sanitatsiya", "user input"}},
+			{Name: "Yechim berdi", Max: 3, Keywords: []string{"prepared statement", "parametrlangan", "orm"}},
+		},
+		ModelAnswer:             "Bu SQL injection. Foydalanuvchi inputi so'rovga to'g'ridan-to'g'ri qo'shilgan. Yechim: parametrlangan so'rovlar ishlatish.",
+		CodeLanguage:            codeLang,
+		CodeChallengeAfterRound: 3,
+		Hint:                    "Foydalanuvchi kiritmasini tekshiring va query string yig'ishni to'xtating.",
+	}
+
+	if strings.TrimSpace(req.DocumentText) != "" {
+		draft.Situation = "Yuklangan dars materiali asosida muammo qayta tuzildi. Talaba endi uni chat orqali tahlil qiladi."
+	}
+	if strings.Contains(lc, "auth") || strings.Contains(lc, "login") || strings.Contains(lc, "sql") {
+		draft.Situation = "Login sahifasida g'alati xatti-harakat kuzatildi. Foydalanuvchi kiritmasi noto'g'ri ishlov berilmoqda."
+		draft.BuggyCode = "def login(username, password):\n    query = \"SELECT * FROM users WHERE name='\" + username + \"' AND pass='\" + password + \"'\"\n    return db.execute(query)\n"
+		draft.Tests = "assert login('admin', 'pass') is not None\nassert login(\"admin' OR '1'='1\", 'x') is None\nassert login(\"'; DROP TABLE users;--\", 'x') is None\n"
+	} else {
+		draft.BuggyCode = "def solve(x):\n    return x + 1\n"
+		draft.Tests = "assert solve(1) == 2\nassert solve(3) == 4\n"
+	}
+	return draft, nil
+}

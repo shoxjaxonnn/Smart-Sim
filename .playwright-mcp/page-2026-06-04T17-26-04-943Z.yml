@@ -1,0 +1,54 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: ◆
+      - generic [ref=e7]:
+        - generic [ref=e8]: Smart Sim
+        - generic [ref=e9]: Hackathon MVP
+    - navigation [ref=e10]:
+      - button "Student" [ref=e11] [cursor=pointer]
+      - button "Teacher" [ref=e12] [cursor=pointer]
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: Student panel
+          - heading "Chat-first simulation" [level=2] [ref=e18]
+        - generic [ref=e19]:
+          - generic [ref=e20]: Backend online
+          - button "Reload" [ref=e21] [cursor=pointer]
+      - generic [ref=e23]:
+        - complementary [ref=e24]:
+          - generic [ref=e25]:
+            - text: Vaziyat
+            - heading "Shubhali login formasi" [level=3] [ref=e26]
+          - paragraph [ref=e27]: "Sen DevOps muhandisisan. Tungi 02:00 da `users` jadvaliga g'alati so'rovlar tushayotgani haqida ogohlantirish keldi. Login sahifasida nimadir noto'g'ri. Muammoni aniqla va hal qil. (AI bu vaziyatni boshqaradi, lekin undan chetga chiqmaydi. Aniq raqam so'ralsa — faqat facts ichidan get_fact orqali beradi.)"
+          - generic [ref=e28]:
+            - generic [ref=e29]:
+              - generic [ref=e30]: Savol-javob
+              - generic [ref=e31]: "0"
+            - generic [ref=e32]:
+              - generic [ref=e33]: Faktlar himoyasi
+              - generic [ref=e34]: 🛡️ Faol
+          - generic [ref=e35]: 💡 AI yo'naltiradi, lekin yechimni o'zing topasan. Aniq raqam kerak bo'lsa — so'ra, AI faqat tasdiqlangan faktni beradi (to'qima yo'q).
+          - generic [ref=e36]:
+            - button "Yakunlash va baho olish" [disabled] [ref=e38]
+            - paragraph [ref=e39]: Avval kamida bitta javob yoz.
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - generic [ref=e43]: AI Tutor
+            - generic [ref=e44]: IT / Web Security
+          - generic [ref=e46]:
+            - generic [ref=e47]: AI
+            - generic [ref=e48]:
+              - generic [ref=e49]: Salom! "Shubhali login formasi" vaziyatini o'qib chiqding. Tayyor bo'lsang — muammoni qanday tekshira boshlaysan?
+              - generic [ref=e50]: 22:25
+          - generic [ref=e51]:
+            - generic [ref=e52]: "Boshlash uchun:"
+            - button "Server error logida nima yozilgan?" [ref=e53] [cursor=pointer]
+            - button "Qaysi jadval hujumga uchragan?" [ref=e54] [cursor=pointer]
+            - button "Bu qanday hujum turi deb o'ylaysan?" [ref=e55] [cursor=pointer]
+          - generic [ref=e56]:
+            - textbox "Javobingni yoz… (Enter — yuborish · Shift+Enter — yangi qator)" [ref=e57]:
+              - /placeholder: Javobingni yoz…  (Enter — yuborish · Shift+Enter — yangi qator)
+            - button "Yuborish" [disabled] [ref=e58]

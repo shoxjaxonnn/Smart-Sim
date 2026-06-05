@@ -104,6 +104,7 @@ function barColor(score, max) {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 18px 20px;
+  box-shadow: var(--shadow);
 }
 .crit-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
 .crit-name { font-weight: 600; font-size: 15.5px; }

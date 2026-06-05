@@ -1,0 +1,14 @@
+- generic [ref=e3]:
+  - generic [ref=e4]: "[plugin:vite:vue] [vue/compiler-sfc] Unexpected token, expected \":\" (139:19) C:/Users/Shoxjaxon/Desktop/smart-edu/frontend/src/components/ChatPanel.vue 137| sandboxResult.value = res 138| sandboxMsg.value = res.passed 139| ? 'Testlar o'tdi. Yechim ishladi.' 140| : res.timed_out 141| ? 'Kod timeout berdi.'"
+  - generic [ref=e5]: C:/Users/Shoxjaxon/Desktop/smart-edu/frontend/src/components/ChatPanel.vue:139:19
+  - generic [ref=e6]: "137| sandboxResult.value = res 138| sandboxMsg.value = res.passed 139| ? 'Testlar o'tdi. Yechim ishladi.' | ^ 140| : res.timed_out 141| ? 'Kod timeout berdi.'"
+  - generic [ref=e7]: at constructor (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@babel\parser\lib\index.js:365:19) at Parser.raise (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@babel\parser\lib\index.js:6616:19) at Parser.unexpected (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@babel\parser\lib\index.js:6636:16) at Parser.expect (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@babel\parser\lib\index.js:6916:12) at Parser.parseConditional (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@babel\parser\lib\index.js:10909:12) at Parser.parseMaybeConditional (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@babel\parser\lib\index.js:10902:17) at Parser.parseMaybeAssign (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@babel\parser\lib\index.js:10848:21) at Parser.parseMaybeAssign (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@babel\parser\lib\index.js:10877:25) at Parser.parseExpressionBase (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@babel\parser\lib\index.js:10801:23) at C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@babel\parser\lib\index.js:10797:39
+  - generic [ref=e8]:
+    - text: Click outside, press Esc key, or fix the code to dismiss.
+    - text: You can also disable this overlay by setting
+    - code [ref=e9]: server.hmr.overlay
+    - text: to
+    - code [ref=e10]: "false"
+    - text: in
+    - code [ref=e11]: vite.config.js
+    - text: .

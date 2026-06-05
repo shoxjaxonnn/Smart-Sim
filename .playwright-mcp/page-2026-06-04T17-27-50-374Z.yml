@@ -1,0 +1,53 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: ◆
+      - generic [ref=e7]:
+        - generic [ref=e8]: Smart Sim
+        - generic [ref=e9]: Hackathon MVP
+    - navigation [ref=e10]:
+      - button "Student" [ref=e11] [cursor=pointer]
+      - button "Teacher" [ref=e12] [cursor=pointer]
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: Teacher panel
+          - heading "Issue + broken code yaratish" [level=2] [ref=e18]
+        - button "Refresh" [ref=e19] [cursor=pointer]
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: Scenarios
+          - generic [ref=e23]: Hali scenario yo'q. Yangi issue yarat.
+        - generic [ref=e24]:
+          - generic [ref=e25]: Generate new issue
+          - generic [ref=e26]:
+            - generic [ref=e27]:
+              - generic [ref=e28]: Title
+              - textbox "Title" [ref=e29]:
+                - /placeholder: Shubhali login formasi
+            - generic [ref=e30]:
+              - generic [ref=e31]: Subject
+              - textbox "Subject" [ref=e32]:
+                - /placeholder: IT / Web Security
+                - text: IT / Web Security
+            - generic [ref=e33]:
+              - generic [ref=e34]: Language
+              - textbox "Language" [ref=e35]:
+                - /placeholder: uz
+                - text: uz
+            - generic [ref=e36]:
+              - generic [ref=e37]: Code language
+              - textbox "Code language" [ref=e38]:
+                - /placeholder: python
+                - text: python
+          - generic [ref=e39]:
+            - generic [ref=e40]: Problem focus
+            - textbox "Problem focus" [ref=e41]:
+              - /placeholder: Broken login flow
+              - text: Broken login flow
+          - generic [ref=e42]:
+            - generic [ref=e43]: Lesson context
+            - textbox "Lesson context" [ref=e44]:
+              - /placeholder: DOCXdan olingan lesson contextni shu yerga qo'y...
+          - button "Generate draft" [ref=e46] [cursor=pointer]

@@ -1,0 +1,115 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SS
+      - generic [ref=e7]:
+        - generic [ref=e8]: Smart Sim
+        - generic [ref=e9]: Uzbek AI simulation lab
+    - navigation [ref=e10]:
+      - button "Student" [ref=e11] [cursor=pointer]
+      - button "Teacher" [ref=e12] [cursor=pointer]
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: Teacher panel
+          - heading "DOCX upload → AI draft → approve" [level=2] [ref=e18]
+        - button "Refresh" [ref=e19] [cursor=pointer]
+      - generic [ref=e20]:
+        - generic [ref=e21]: Upload document
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: DOCX file
+            - button "DOCX file" [active] [ref=e25]
+          - generic [ref=e26]:
+            - generic [ref=e27]: Title
+            - textbox "Title" [ref=e28]:
+              - /placeholder: Ko'paytma array
+          - generic [ref=e29]:
+            - generic [ref=e30]: Subject
+            - textbox "Subject" [ref=e31]:
+              - /placeholder: IT / Web Security
+              - text: IT / Web Security
+          - generic [ref=e32]:
+            - generic [ref=e33]: Language
+            - textbox "Language" [ref=e34]:
+              - /placeholder: uz
+              - text: uz
+          - generic [ref=e35]:
+            - generic [ref=e36]: Code language
+            - textbox "Code language" [ref=e37]:
+              - /placeholder: python
+              - text: python
+          - generic [ref=e38]:
+            - generic [ref=e39]: Problem focus
+            - textbox "Problem focus" [ref=e40]:
+              - /placeholder: Broken login flow
+        - generic [ref=e41]:
+          - generic [ref=e42]: Teacher instruction
+          - textbox "Teacher instruction" [ref=e43]:
+            - /placeholder: "AIga aniq nima qilishni yoz. Masalan: shu DOCXdagi mavzudan SQL injection senariysi yarat."
+        - button "Upload DOCX" [ref=e45] [cursor=pointer]
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e48]: Documents
+          - generic [ref=e49]: Hali document yo'q. DOCX yukla.
+        - generic [ref=e50]:
+          - generic [ref=e51]: Scenario editor
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - generic [ref=e60]: ID
+                - textbox "ID" [disabled] [ref=e61]: sql-injection-001
+              - generic [ref=e62]:
+                - generic [ref=e63]: Status
+                - textbox "Status" [ref=e64]: approved
+              - generic [ref=e65]:
+                - generic [ref=e66]: Title
+                - textbox "Title" [ref=e67]: Shubhali login formasi
+              - generic [ref=e68]:
+                - generic [ref=e69]: Subject
+                - textbox "Subject" [ref=e70]: IT / Web Security
+              - generic [ref=e71]:
+                - generic [ref=e72]: Language
+                - textbox "Language" [ref=e73]: uz
+              - generic [ref=e74]:
+                - generic [ref=e75]: Code language
+                - textbox "Code language" [ref=e76]: python
+              - generic [ref=e77]:
+                - generic [ref=e78]: Reveal round
+                - spinbutton "Reveal round" [ref=e79]: "3"
+            - generic [ref=e80]:
+              - generic [ref=e81]: Situation
+              - textbox "Situation" [ref=e82]: "Sen DevOps muhandisisan. Tungi 02:00 da `users` jadvaliga g'alati so'rovlar tushayotgani haqida ogohlantirish keldi. Login sahifasida nimadir noto'g'ri. Muammoni aniqla va hal qil. (AI bu vaziyatni boshqaradi, lekin undan chetga chiqmaydi. Aniq raqam so'ralsa — faqat facts ichidan get_fact orqali beradi.)"
+            - generic [ref=e83]:
+              - generic [ref=e84]:
+                - generic [ref=e85]: Model answer
+                - textbox "Model answer" [ref=e86]: Bu SQL injection hujumi. Login formasi foydalanuvchi kiritmasini to'g'ridan-to'g'ri so'rovga qo'shgani uchun yuzaga keladi. Yechim — parametrlangan so'rovlar (prepared statements) ishlatish.
+              - generic [ref=e87]:
+                - generic [ref=e88]: Broken code
+                - textbox "Broken code" [ref=e89]: "def login(username, password): query = \"SELECT * FROM users WHERE name='\" + username + \"' AND pass='\" + password + \"'\" return db.execute(query)"
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - generic [ref=e92]: Hint
+                - textbox "Hint" [ref=e93]: Foydalanuvchi inputini string concat bilan queryga qo'shmang.
+              - generic [ref=e94]:
+                - generic [ref=e95]: Tests
+                - textbox "Tests" [ref=e96]: assert login("admin", "pass") is not None, "Oddiy login ishlashi kerak" assert login("admin' OR '1'='1", "x") is None, "SQL injection oldini olinmagan!" assert login("'; DROP TABLE users;--", "x") is None, "Xavfli kiritma qabul qilindi!"
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - generic [ref=e99]: Facts JSON
+                - textbox "Facts JSON" [ref=e100]: "{ \"db.table\": \"users\", \"login.field\": \"username\", \"server.cpu\": \"94%\", \"server.error_log\": \"Error: unexpected token near '--' in query\", \"server.ram\": \"Bu ma'lumot mavjud emas\" }"
+              - generic [ref=e101]:
+                - generic [ref=e102]: Rubric JSON
+                - textbox "Rubric JSON" [ref=e103]: "[ { \"name\": \"Hujum turini aniqlash\", \"max\": 3, \"keywords\": [ \"SQL injection\", \"injeksiya\" ] }, { \"name\": \"Sababni tushuntirish\", \"max\": 4, \"keywords\": [ \"validatsiya\", \"sanitatsiya\", \"user input\" ] }, { \"name\": \"Yechim taklif qilish\", \"max\": 3, \"keywords\": [ \"prepared statement\", \"parametrlangan\", \"ORM\" ] } ]"
+            - generic [ref=e104]:
+              - button "Save draft" [ref=e105] [cursor=pointer]
+              - button "Approve" [ref=e106] [cursor=pointer]
+      - generic [ref=e54]:
+        - generic [ref=e55]: Scenarios
+        - button "Shubhali login formasi approved IT / Web Security sql-injection-001" [ref=e107] [cursor=pointer]:
+          - generic [ref=e108]:
+            - generic [ref=e109]: Shubhali login formasi
+            - generic [ref=e110]: approved
+          - generic [ref=e111]: IT / Web Security
+          - generic [ref=e112]: sql-injection-001

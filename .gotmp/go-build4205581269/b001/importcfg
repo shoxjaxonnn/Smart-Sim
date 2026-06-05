@@ -1,0 +1,17 @@
+# import config
+packagefile bufio=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\ec\eccd6075b477ab6425159d41b33ee2058bf6f69ac347bb2301e999bbda36baf6-d
+packagefile context=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\9a\9ad251161b2f6e13554b66ff86c289b8a2d382b0eb376d3d8aac22b58c8ecc5c-d
+packagefile encoding/json=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\dc\dcad1bf5ed014fef4540f9b459ffffede41a8ce30aae416fc8f195ae9cc8c377-d
+packagefile fmt=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\5c\5cb2e9dba050c4a615faee08e4f51a040c2f2b00a26551a7cd5b45ffcc8fee1f-d
+packagefile log=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\0b\0b48e043b67d3433336968615e72d3637b3d39c531f2af58092f1899ba33d24b-d
+packagefile net/http=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\f2\f200e7d4140fd8abad8730a19a8693454ba8d8a918bd57736a835482a3a9ab09-d
+packagefile os=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\4d\4df78071d983a4a46bd4b1e232ace3e4aa4541a6706e58621a0c0065d6d5a0e8-d
+packagefile path/filepath=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\f4\f468133690ba58d52594daaee14cededf86956786f3ecd190b7718152efc8534-d
+packagefile smartedu/internal/llm=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\34\34c6bbb47957b85cabaf17baca7a3b0d23af4b7bb188288da2f797746b38876f-d
+packagefile smartedu/internal/sandbox=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\9e\9e55ba5f10d0ea8fb9d8a5a7166a518c2d2c56ecf6c79302272242a0bd12ed30-d
+packagefile smartedu/internal/scenario=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\09\0944de69d9491e11ef378b56a0a126926fbf6ce4d073c58cc82b5bf2705ee359-d
+packagefile sort=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\62\62e4bf5d0db2a205715318df124da99ad69dd0c19dfbfd469f2db4d7dba80703-d
+packagefile strings=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\76\767ccb8217bd66a3394af652343d2d6fc780cdb83ae09e7b38f834d53ef16b9a-d
+packagefile sync=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\04\04ceea857de9dca15c2e61f863b538afad6b7fea033e52bf260ff871ae567599-d
+packagefile time=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\25\251ffcf4c5ab9f685330276563ae57a1a1216b67aaea228b437907588a1d8d9a-d
+packagefile runtime=C:\Users\Shoxjaxon\Desktop\smart-edu\.gocache\3e\3e434f0698c7a36d5528d28bbd6e8872f1564a59fa05392fe2488ff894e57bdf-d

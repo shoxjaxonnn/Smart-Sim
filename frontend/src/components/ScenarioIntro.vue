@@ -36,7 +36,7 @@ const features = [
       Backend ulanmagan. Senariylar yuklanmadi.
     </div>
     <div v-else-if="scenarios.length === 0" class="empty">
-      Senariylar yuklanmoqda…
+      Hali approved senariy yo'q. Teacher panelda birini yarating va approve qiling.
     </div>
 
     <div class="cards">
@@ -74,10 +74,11 @@ h1 { font-size: 40px; line-height: 1.1; margin: 0 0 14px; letter-spacing: -.5px;
   margin-bottom: 38px;
 }
 .feature {
-  background: var(--panel);
+  background: linear-gradient(160deg, var(--panel-2), var(--panel));
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 20px;
+  box-shadow: var(--shadow);
 }
 .feat-icon { font-size: 26px; }
 .feat-title { font-weight: 650; margin: 10px 0 6px; font-size: 16px; }
@@ -103,7 +104,7 @@ h1 { font-size: 40px; line-height: 1.1; margin: 0 0 14px; letter-spacing: -.5px;
   color: var(--text);
   box-shadow: var(--shadow);
 }
-.card:hover { border-color: var(--accent); filter: brightness(1.05); }
+.card:hover { border-color: var(--accent); filter: brightness(1.04); }
 .card-subject {
   font-size: 12px;
   color: var(--accent);

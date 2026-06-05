@@ -1,0 +1,21 @@
+# import config
+packagefile internal/abi=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\d5\d5e37e46286304cfeb9482969bae4717c578d218204b419e39405d7921de68a4-d
+packagefile internal/bytealg=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\72\72057cbe28c2e6bad63b19a4db2ad1cb84090aff6c28c386b9033109454e7c41-d
+packagefile internal/byteorder=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\6e\6e1a4da2954a17ccb0f28c57aac5cd06d1165dddf74bd59d64f591f4f58ffe54-d
+packagefile internal/chacha8rand=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\cc\cc4e969f292d912a75d6d0dbd92312d6f0a4a91dab309cb5131c2dbe5b9c6bd1-d
+packagefile internal/coverage/rtcov=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\91\9170e340216752e01cb47b5255e2c47b0bcc5db7919d196aa315a5cb33345102-d
+packagefile internal/cpu=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\60\604cd99ef26df7017c9d1f569c51def5dc349fff531a438d68daced9ca1663f3-d
+packagefile internal/goarch=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\79\79d3addb5ed72efbd5249e89c9472e118ccde39e2f225a90836ecfac0b8a56b7-d
+packagefile internal/godebugs=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\a8\a847bc11398db6d4ea4763bebb79303083771e1788a4feddbc8665001aac4818-d
+packagefile internal/goexperiment=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\ba\ba9a93d59d6dea1b42059e8986dd77116b847cb4abcc49c06abbd7887ebaf204-d
+packagefile internal/goos=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\25\25b5872961a9eb4a83be52cc49e8e8aa7bba7a9f722ddd6bd5e766ecb57aa0fd-d
+packagefile internal/profilerecord=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\a3\a37dbc60d58e2b3735c63a307c0e60729de26ccd84070d029799351a77d11fd4-d
+packagefile internal/runtime/atomic=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\f6\f6ec3cec01b80445567558bf6b31f8cc474bdb1856af2c022148d1d39f32f3f6-d
+packagefile internal/runtime/exithook=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_tmp\go-build4210251892\b021\_pkg_.a
+packagefile internal/runtime/gc=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\34\346b57295758d3e2ef32efde6510409d60164307fb6154bea9b2052a41354f3d-d
+packagefile internal/runtime/maps=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_tmp\go-build4210251892\b023\_pkg_.a
+packagefile internal/runtime/math=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_tmp\go-build4210251892\b027\_pkg_.a
+packagefile internal/runtime/strconv=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_tmp\go-build4210251892\b029\_pkg_.a
+packagefile internal/runtime/sys=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_tmp\go-build4210251892\b028\_pkg_.a
+packagefile internal/stringslite=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_tmp\go-build4210251892\b030\_pkg_.a
+packagefile internal/trace/tracev2=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_tmp\go-build4210251892\b031\_pkg_.a

@@ -1,0 +1,5 @@
+# import config
+packagefile internal/abi=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\d5\d5e37e46286304cfeb9482969bae4717c578d218204b419e39405d7921de68a4-d
+packagefile internal/goarch=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\79\79d3addb5ed72efbd5249e89c9472e118ccde39e2f225a90836ecfac0b8a56b7-d
+packagefile internal/race=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_cache\ab\ab1d0ee49281695e4820f15a8bac82e5146a0a3782e5a82c5c05f482c4f81ac9-d
+packagefile sync/atomic=C:\Users\Shoxjaxon\Desktop\smart-edu\backend\go_tmp\go-build4210251892\b035\_pkg_.a

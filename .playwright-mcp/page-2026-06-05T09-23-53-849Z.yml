@@ -1,0 +1,131 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SS
+      - generic [ref=e7]:
+        - generic [ref=e8]: Smart Sim
+        - generic [ref=e9]: Uzbek AI simulation lab
+    - navigation [ref=e10]:
+      - button "Student" [ref=e11] [cursor=pointer]
+      - button "Teacher" [ref=e12] [cursor=pointer]
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: Teacher panel
+          - heading "DOCX upload → AI draft → approve" [level=2] [ref=e18]
+        - button "Refresh" [ref=e19] [cursor=pointer]
+      - paragraph [ref=e128]: "senariy yaratish xatosi: gemini error: Invalid JSON payload received. Unknown name \"additionalProperties\" at 'generation_config.response_schema.properties[3].value': Cannot find field."
+      - generic [ref=e20]:
+        - generic [ref=e21]: Upload document
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: DOCX file
+            - button "DOCX file" [ref=e25]
+          - generic [ref=e26]:
+            - generic [ref=e27]: Title
+            - textbox "Title" [ref=e28]:
+              - /placeholder: Ko'paytma array
+              - text: HTML Asoslari
+          - generic [ref=e29]:
+            - generic [ref=e30]: Subject
+            - textbox "Subject" [ref=e31]:
+              - /placeholder: IT / Web Security
+              - text: HTML / CSS
+          - generic [ref=e32]:
+            - generic [ref=e33]: Language
+            - textbox "Language" [ref=e34]:
+              - /placeholder: uz
+              - text: uz
+          - generic [ref=e35]:
+            - generic [ref=e36]: Code language
+            - textbox "Code language" [ref=e37]:
+              - /placeholder: python
+              - text: python
+          - generic [ref=e38]:
+            - generic [ref=e39]: Problem focus
+            - textbox "Problem focus" [ref=e40]:
+              - /placeholder: Broken login flow
+              - text: Semantic HTML
+        - generic [ref=e41]:
+          - generic [ref=e42]: Teacher instruction
+          - textbox "Teacher instruction" [ref=e43]:
+            - /placeholder: "AIga aniq nima qilishni yoz. Masalan: shu DOCXdagi mavzudan SQL injection senariysi yarat."
+            - text: From the uploaded DOCX, create a clear HTML lesson scenario.
+        - button "Upload DOCX" [ref=e45] [cursor=pointer]
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e48]: Documents
+          - 'button "HTML Asoslari new HTML_Asoslari_Dars_Materiali.docx HTML asoslari: Veb-sahifalar yaratish HTML (HyperText Markup Language) veb-sahifalarning asosiy qurilish tili Generate" [ref=e113] [cursor=pointer]':
+            - generic [ref=e114]:
+              - generic [ref=e115]: HTML Asoslari
+              - generic [ref=e116]: new
+            - generic [ref=e117]: HTML_Asoslari_Dars_Materiali.docx
+            - generic [ref=e118]: "HTML asoslari: Veb-sahifalar yaratish HTML (HyperText Markup Language) veb-sahifalarning asosiy qurilish tili"
+            - button "Generate" [ref=e120]
+        - generic [ref=e50]:
+          - generic [ref=e51]: Scenario editor
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - strong [ref=e123]: HTML Asoslari
+              - generic [ref=e124]: HTML_Asoslari_Dars_Materiali.docx
+            - generic [ref=e125]: "HTML asoslari: Veb-sahifalar yaratish HTML (HyperText Markup Language) veb-sahifalarning asosiy qurilish tilidir. U brauzerga sahifadagi kontentni qanday ko'rsatishni aytadi. HTML teglar (tags) yordamida matn, rasm, havola, jadval va boshqa elementlar joylashtiriladi. HTML birinchi marta 1991-yilda Tim Berners-Li tomonidan ishlab chiqilgan. Hozirgi zamonaviy versiyasi HTML5 bo'lib, u multimedia, grafika va interaktiv ilovalarni qo'llab-quvvatlaydi. 1. HTML hujjatning asosiy tuzilmasi Har bir HTML hujjat quyidagi asosiy tuzilmaga ega. Bu tuzilma brauzerga hujjat turi va tarkibini aniqlashga yordam beradi: <!DOCTYPE html> <html lang=\"uz\"> <head> <meta charset=\"UTF-8\"> <title>Sahifa sarlavhasi</title> </head> <body> <h1>Salom, dunyo!</h1> <p>Bu mening birinchi veb-sahifam.</p> </body> </html> Bu tuzilmaning har bir qismi muhim vazifani bajaradi: <!DOCTYPE html> - brauzerga hujjat HTML5 formatida ekanligini bildiradi <html> - butun hujjatni o'rab turuvchi ildiz element <head> - metadata, stillar va skriptlar joylashadigan qism <body> - foydalanuvchiga ko'rinadigan barcha kontent joylashadigan qism 2. Matn teglari HTML da matn bilan ishlash uchun bir nechta asosiy teglar mavjud. Ular matn tuzilmasini va ko'rinishini belgilaydi. 2.1 Sarlavha teglari (Headings) HTML da olti darajali sarlavha mavjud. H1 eng katta va eng muhim, H6 eng kichik: <h1>Birinchi darajali sarlavha</h1> <h2>Ikkinchi darajali sarlavha</h2> <h3>Uchinchi darajali sarlavha</h3> Muhim qoida: Har bir sahifada faqat bitta H1 tegi bo'lishi kerak. Bu qoida SEO (qidiruv tizimi optimizatsiyasi) uchun juda muhim. 2.2 Paragraf va formatlash Paragraflar uchun <p> tegi ishlatiladi. Matnni formatlash uchun quyidagi teglar qo'llaniladi: Teg Vazifasi Misol <strong> Qalin (muhim) matn Bu muhim matn <em> Kursiv (ta'kidlangan) matn Bu ta'kidlangan matn <mark> Belgilangan matn Bu belgilangan matn <code> Kod parchalari console.log() <br> Qator uzilishi Yangi qatorga o'tish <hr> Gorizontal chiziq Bo'limlarni ajratadi 3. Ro'yxatlar (Lists) HTML da ikki asosiy ro'yxat turi mavjud: tartibsiz (unordered) va tartiblangan (ordered). 3.1 Tartibsiz ro'yxat <ul> <li>HTML - tuzilma</li> <li>CSS - dizayn</li> <li>JavaScript - interaktivlik</li> </ul> 3.2 Tartiblangan ro'yxat <ol> <li>Birinchi qadam</li> <li>Ikkinchi qadam</li> <li>Uchinchi qadam</li> </ol> 4. Havolalar va rasmlar Havolalar veb-sahifalarni bir-biriga bog'laydi. Rasmlar sahifaga vizual kontent qo'shadi. 4.1 Havolalar (Links) Havola yaratish uchun <a> (anchor) tegi ishlatiladi: <a href=\"https://example.com\">Saytga o'tish</a> <a href=\"#section2\">Sahifa ichidagi bo'limga o'tish</a> <a href=\"mailto:info@example.com\">Email yuborish</a> target=\"_blank\" atributi havolani yangi oynada ochish uchun ishlatiladi. Xavfsizlik uchun doimo rel=\"noopener noreferrer\" qo'shing. 4.2 Rasmlar (Images) Rasm qo'yish uchun <img> tegi ishlatiladi. Bu o'zi yopiladigan teg (self-closing): <img src=\"rasm.jpg\" alt=\"Rasm tavsifi\" width=\"600\"> alt atributi juda muhim: u rasm yuklanmasa ko'rinadigan matn, ekran o'quvchilar (screen readers) uchun tavsif, va SEO uchun signal vazifasini bajaradi. 5. Jadvallar (Tables) Jadvallar ma'lumotlarni ustun va qatorlarda tartiblab ko'rsatish uchun ishlatiladi: <table> <thead> <tr> <th>Ism</th> <th>Yosh</th> <th>Shahar</th> </tr> </thead> <tbody> <tr> <td>Ali</td> <td>25</td> <td>Toshkent</td> </tr> </tbody> </table> Jadval teglari haqida qisqacha: Teg Vazifasi <table> Jadval konteyneri <thead> Jadval sarlavhasi guruhi <tbody> Jadval asosiy qismi <tr> Jadval qatori (table row) <th> Sarlavha katagi (qalin, markazlashgan) <td> Ma'lumot katagi (table data) 6. Formalar (Forms) Formalar foydalanuvchidan ma'lumot olish uchun ishlatiladi. Login sahifasi, qidiruv maydoni, ro'yxatdan o'tish - bularning barchasi formalar orqali ishlaydi. <form action=\"/login\" method=\"POST\"> <label for=\"username\">Foydalanuvchi nomi:</label> <input type=\"text\" id=\"username\" name=\"username\" required> <label for=\"password\">Parol:</label> <input type=\"password\" id=\"password\" name=\"password\" required> <button type=\"submit\">Kirish</button> </form> HTML5 da qo'shimcha input turlari mavjud: type=\"email\" - email manzilini tekshiradi type=\"number\" - faqat raqamlarni qabul qiladi type=\"date\" - sana tanlagich ko'rsatadi type=\"file\" - fayl yuklash imkonini beradi type=\"range\" - slayder (diapazon) ko'rsatadi 7. Semantik HTML Semantik teglar sahifa tuzilmasiga ma'no qo'shadi. Ular brauzer, qidiruv tizimlari va ekran o'quvchilar uchun sahifa tarkibini tushunishga yordam beradi. Semantik teglar ro'yxati va ularning vazifalari: Teg Vazifasi Misol ishlatish <header> Sahifa yoki bo'lim sarlavhasi Logo, navigatsiya <nav> Navigatsiya havolalari Menyu, breadcrumb <main> Asosiy kontent Sahifaning yagona asosiy qismi <article> Mustaqil kontent bo'lagi Blog post, yangilik <section> Mavzuiy bo'lim Sahifa bo'limlari <aside> Yon panel kontent Sidebar, reklama <footer> Sahifa yoki bo'lim pastki qismi Mualliflik, havolalar Nima uchun semantik HTML muhim? Birinchidan, SEO uchun: qidiruv tizimlari sahifa tuzilmasini yaxshiroq tushunadi. Ikkinchidan, accessibility uchun: ekran o'quvchilar ko'zi ojiz foydalanuvchilarga sahifani to'g'ri o'qib beradi. Uchinchidan, kod o'qilishi uchun: dasturchilar sahifa tuzilmasini tezroq tushunadi. 8. HTML va CSS bog'lanishi CSS (Cascading Style Sheets) HTML elementlarining ko'rinishini boshqaradi. CSSni HTMLga uch xil usulda ulash mumkin: Inline (teg ichida): style atributi orqali. Faqat bitta elementga ta'sir qiladi. Internal (head ichida): <style> tegi ichida. Faqat shu sahifaga ta'sir qiladi. External (tashqi fayl): <link> tegi orqali. Bir nechta sahifaga ta'sir qiladi. Bu eng tavsiya etiladigan usul. <link rel=\"stylesheet\" href=\"styles.css\"> Xulosa HTML veb-dasturlashning poydevoridir. Uni o'rganmasdan zamonaviy veb-texnologiyalarni tushunish mumkin emas. Ushbu hujjatda HTML ning asosiy tushunchalari, teglari va amaliy misollari keltirildi. Keyingi qadamlar: CSS orqali dizayn qo'shish, JavaScript orqali interaktivlik qo'shish, va responsiv dizayn (turli ekran o'lchamlariga moslashish) ni o'rganish. Eslatma: Amaliyot eng yaxshi o'qituvchidir. Har bir o'rganilgan tegni darhol sinab ko'ring va o'z loyihalaringizda qo'llang."
+            - button "Generate draft from doc" [ref=e127] [cursor=pointer]
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - generic [ref=e60]: ID
+                - textbox "ID" [disabled] [ref=e61]: sql-injection-001
+              - generic [ref=e62]:
+                - generic [ref=e63]: Status
+                - textbox "Status" [ref=e64]: approved
+              - generic [ref=e65]:
+                - generic [ref=e66]: Title
+                - textbox "Title" [ref=e67]: Shubhali login formasi
+              - generic [ref=e68]:
+                - generic [ref=e69]: Subject
+                - textbox "Subject" [ref=e70]: IT / Web Security
+              - generic [ref=e71]:
+                - generic [ref=e72]: Language
+                - textbox "Language" [ref=e73]: uz
+              - generic [ref=e74]:
+                - generic [ref=e75]: Code language
+                - textbox "Code language" [ref=e76]: python
+              - generic [ref=e77]:
+                - generic [ref=e78]: Reveal round
+                - spinbutton "Reveal round" [ref=e79]: "3"
+            - generic [ref=e80]:
+              - generic [ref=e81]: Situation
+              - textbox "Situation" [ref=e82]: "Sen DevOps muhandisisan. Tungi 02:00 da `users` jadvaliga g'alati so'rovlar tushayotgani haqida ogohlantirish keldi. Login sahifasida nimadir noto'g'ri. Muammoni aniqla va hal qil. (AI bu vaziyatni boshqaradi, lekin undan chetga chiqmaydi. Aniq raqam so'ralsa — faqat facts ichidan get_fact orqali beradi.)"
+            - generic [ref=e83]:
+              - generic [ref=e84]:
+                - generic [ref=e85]: Model answer
+                - textbox "Model answer" [ref=e86]: Bu SQL injection hujumi. Login formasi foydalanuvchi kiritmasini to'g'ridan-to'g'ri so'rovga qo'shgani uchun yuzaga keladi. Yechim — parametrlangan so'rovlar (prepared statements) ishlatish.
+              - generic [ref=e87]:
+                - generic [ref=e88]: Broken code
+                - textbox "Broken code" [ref=e89]: "def login(username, password): query = \"SELECT * FROM users WHERE name='\" + username + \"' AND pass='\" + password + \"'\" return db.execute(query)"
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - generic [ref=e92]: Hint
+                - textbox "Hint" [ref=e93]: Foydalanuvchi inputini string concat bilan queryga qo'shmang.
+              - generic [ref=e94]:
+                - generic [ref=e95]: Tests
+                - textbox "Tests" [ref=e96]: assert login("admin", "pass") is not None, "Oddiy login ishlashi kerak" assert login("admin' OR '1'='1", "x") is None, "SQL injection oldini olinmagan!" assert login("'; DROP TABLE users;--", "x") is None, "Xavfli kiritma qabul qilindi!"
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - generic [ref=e99]: Facts JSON
+                - textbox "Facts JSON" [ref=e100]: "{ \"db.table\": \"users\", \"login.field\": \"username\", \"server.cpu\": \"94%\", \"server.error_log\": \"Error: unexpected token near '--' in query\", \"server.ram\": \"Bu ma'lumot mavjud emas\" }"
+              - generic [ref=e101]:
+                - generic [ref=e102]: Rubric JSON
+                - textbox "Rubric JSON" [ref=e103]: "[ { \"name\": \"Hujum turini aniqlash\", \"max\": 3, \"keywords\": [ \"SQL injection\", \"injeksiya\" ] }, { \"name\": \"Sababni tushuntirish\", \"max\": 4, \"keywords\": [ \"validatsiya\", \"sanitatsiya\", \"user input\" ] }, { \"name\": \"Yechim taklif qilish\", \"max\": 3, \"keywords\": [ \"prepared statement\", \"parametrlangan\", \"ORM\" ] } ]"
+            - generic [ref=e104]:
+              - button "Save draft" [ref=e105] [cursor=pointer]
+              - button "Approve" [ref=e106] [cursor=pointer]
+      - generic [ref=e54]:
+        - generic [ref=e55]: Scenarios
+        - button "Shubhali login formasi approved IT / Web Security sql-injection-001" [ref=e107] [cursor=pointer]:
+          - generic [ref=e108]:
+            - generic [ref=e109]: Shubhali login formasi
+            - generic [ref=e110]: approved
+          - generic [ref=e111]: IT / Web Security
+          - generic [ref=e112]: sql-injection-001

@@ -46,11 +46,11 @@ func NewOpenRouter(apiKey, model string) *OpenRouter {
 // ---- OpenAI-compatible payload shapes ----
 
 type orMessage struct {
-	Role       string           `json:"role"`
-	Content    string           `json:"content,omitempty"`
-	ToolCalls  []orToolCall     `json:"tool_calls,omitempty"`
-	ToolCallID string           `json:"tool_call_id,omitempty"`
-	Name       string           `json:"name,omitempty"`
+	Role       string       `json:"role"`
+	Content    string       `json:"content,omitempty"`
+	ToolCalls  []orToolCall `json:"tool_calls,omitempty"`
+	ToolCallID string       `json:"tool_call_id,omitempty"`
+	Name       string       `json:"name,omitempty"`
 }
 
 type orToolCall struct {
@@ -249,6 +249,59 @@ One criterion object per rubric line. No prose outside the JSON.`, maxTotal, rb.
 	}
 	if out.MaxScore == 0 {
 		out.MaxScore = maxTotal
+	}
+	return out, nil
+}
+
+func (o *OpenRouter) GenerateScenario(ctx context.Context, req ScenarioDraftRequest) (ScenarioDraft, error) {
+	var out ScenarioDraft
+	if req.CodeLanguage == "" {
+		req.CodeLanguage = "python"
+	}
+
+	prompt := fmt.Sprintf(`Create one concise teacher draft for a hackathon MVP.
+Return ONLY JSON with fields:
+title, subject, language, situation, facts, rubric, model_answer, buggy_code, hint, tests, code_challenge_after_round, code_language.
+
+Rules:
+- Keep the situation short and concrete.
+- Include 3-4 factual keys.
+- Rubric should have exactly 3 criteria.
+- Buggy code must have one obvious bug relevant to the lesson.
+- Tests must be Python assert lines.
+
+REQUEST:
+Title: %s
+Subject: %s
+Language: %s
+Code language: %s
+Problem focus: %s
+Source document: %s
+Teacher instruction: %s
+Lesson context:
+%s`, req.Title, req.Subject, req.Language, req.CodeLanguage, req.ProblemFocus, req.SourceDocumentName, req.TeacherInstruction, req.DocumentText)
+
+	resp, err := o.call(ctx, orRequest{
+		Model:          o.model,
+		Messages:       []orMessage{{Role: "user", Content: prompt}},
+		ResponseFormat: map[string]string{"type": "json_object"},
+		Temperature:    0.5,
+	})
+	if err != nil {
+		return out, err
+	}
+	if len(resp.Choices) == 0 {
+		return out, fmt.Errorf("openrouter scenario: empty response")
+	}
+	text := resp.Choices[0].Message.Content
+	if i := strings.Index(text, "{"); i > 0 {
+		text = text[i:]
+	}
+	if j := strings.LastIndex(text, "}"); j >= 0 {
+		text = text[:j+1]
+	}
+	if err := json.Unmarshal([]byte(text), &out); err != nil {
+		return out, fmt.Errorf("parse scenario json: %w (raw: %s)", err, text)
 	}
 	return out, nil
 }

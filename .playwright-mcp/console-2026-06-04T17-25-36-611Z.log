@@ -1,0 +1,16 @@
+[     776ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/src/components/ChatPanel.vue?t=1780593539850:0
+[     852ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5173/favicon.ico:0
+[   46054ms] [WARNING] [Vue warn]: Unhandled error during execution of render function 
+  at <TeacherPanel key=0 > 
+  at <App> @ http://localhost:5173/node_modules/.vite/deps/vue.js?v=cfe8bb72:2224
+[   46054ms] [WARNING] [Vue warn]: Unhandled error during execution of component update 
+  at <TeacherPanel key=0 > 
+  at <App> @ http://localhost:5173/node_modules/.vite/deps/vue.js?v=cfe8bb72:2224
+[   46057ms] TypeError: Cannot read properties of undefined (reading 'buggy_code')
+    at Proxy._sfc_render (http://localhost:5173/src/components/TeacherPanel.vue?t=1780593613684:427:63)
+    at renderComponentRoot (http://localhost:5173/node_modules/.vite/deps/vue.js?v=cfe8bb72:6743:17)
+    at ReactiveEffect.componentUpdateFn [as fn] (http://localhost:5173/node_modules/.vite/deps/vue.js?v=cfe8bb72:8394:26)
+    at ReactiveEffect.run (http://localhost:5173/node_modules/.vite/deps/vue.js?v=cfe8bb72:528:19)
+    at ReactiveEffect.runIfDirty (http://localhost:5173/node_modules/.vite/deps/vue.js?v=cfe8bb72:566:12)
+    at callWithErrorHandling (http://localhost:5173/node_modules/.vite/deps/vue.js?v=cfe8bb72:2372:33)
+    at flushJobs (http://localhost:5173/node_modules/.vite/deps/vue.js?v=cfe8bb72:2580:9)

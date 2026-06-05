@@ -25,7 +25,7 @@ func (fs FactsStore) Get(key string) Fact {
 
 // Message — one chat turn.
 type Message struct {
-	Role    string `json:"role"`    // "user" | "assistant"
+	Role    string `json:"role"` // "user" | "assistant"
 	Content string `json:"content"`
 }
 
@@ -35,6 +35,19 @@ type ChatRequest struct {
 	History      []Message
 	UserMessage  string
 	Facts        FactsStore
+}
+
+// ScenarioDraftRequest — input used to generate a teacher draft.
+type ScenarioDraftRequest struct {
+	Title              string `json:"title"`
+	Subject            string `json:"subject"`
+	Language           string `json:"language"`
+	LessonContext      string `json:"lesson_context"`
+	ProblemFocus       string `json:"problem_focus"`
+	CodeLanguage       string `json:"code_language"`
+	SourceDocumentName string `json:"source_document_name"`
+	TeacherInstruction string `json:"teacher_instruction"`
+	DocumentText       string `json:"document_text"`
 }
 
 // Criterion — one rubric line.
@@ -59,6 +72,23 @@ type GradeResult struct {
 	Criteria   []CriterionScore `json:"criteria"`
 }
 
+// ScenarioDraft — structured output for teacher scenario generation.
+type ScenarioDraft struct {
+	ID                      string            `json:"id"`
+	Title                   string            `json:"title"`
+	Subject                 string            `json:"subject"`
+	Language                string            `json:"language"`
+	Situation               string            `json:"situation"`
+	Facts                   map[string]string `json:"facts"`
+	Rubric                  []Criterion       `json:"rubric"`
+	ModelAnswer             string            `json:"model_answer"`
+	BuggyCode               string            `json:"buggy_code"`
+	Hint                    string            `json:"hint"`
+	Tests                   string            `json:"tests"`
+	CodeChallengeAfterRound int               `json:"code_challenge_after_round"`
+	CodeLanguage            string            `json:"code_language"`
+}
+
 // Provider — every LLM (Gemini, OpenAI...) implements this.
 type Provider interface {
 	// Chat — converse with student. Wires up the get_fact tool automatically.
@@ -66,4 +96,7 @@ type Provider interface {
 
 	// Grade — grade student answer against rubric, return structured JSON.
 	Grade(ctx context.Context, modelAnswer, studentAnswer string, rubric []Criterion) (GradeResult, error)
+
+	// GenerateScenario — produce a teacher draft from lesson context.
+	GenerateScenario(ctx context.Context, req ScenarioDraftRequest) (ScenarioDraft, error)
 }

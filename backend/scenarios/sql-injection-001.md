@@ -3,6 +3,9 @@ id: "sql-injection-001"
 title: "Shubhali login formasi"
 subject: "IT / Web Security"
 language: "uz"
+status: "approved"
+code_challenge_after_round: 3
+code_language: "python"
 
 facts:
   server.error_log: "Error: unexpected token near '--' in query"
@@ -26,6 +29,17 @@ model_answer: >
   Bu SQL injection hujumi. Login formasi foydalanuvchi kiritmasini
   to'g'ridan-to'g'ri so'rovga qo'shgani uchun yuzaga keladi. Yechim —
   parametrlangan so'rovlar (prepared statements) ishlatish.
+
+code_challenge:
+  buggy_code: |
+    def login(username, password):
+        query = "SELECT * FROM users WHERE name='" + username + "' AND pass='" + password + "'"
+        return db.execute(query)
+  hint: "Foydalanuvchi inputini string concat bilan queryga qo'shmang."
+  tests: |
+    assert login("admin", "pass") is not None, "Oddiy login ishlashi kerak"
+    assert login("admin' OR '1'='1", "x") is None, "SQL injection oldini olinmagan!"
+    assert login("'; DROP TABLE users;--", "x") is None, "Xavfli kiritma qabul qilindi!"
 ---
 
 ## Vaziyat

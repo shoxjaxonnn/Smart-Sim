@@ -1,97 +1,50 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { api } from './api'
-import ScenarioIntro from './components/ScenarioIntro.vue'
-import ChatPanel from './components/ChatPanel.vue'
-import GradePanel from './components/GradePanel.vue'
+import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
+import TeacherPanel from './components/TeacherPanel.vue'
+import StudentPanel from './components/StudentPanel.vue'
 
-const view = ref('intro') // intro | chat | grade
-const scenarios = ref([])
-const scenario = ref(null)
-const sessionId = ref(null)
-const grade = ref(null)
-const offline = ref(false)
-const error = ref('')
+const path = ref(window.location.pathname || '/')
 
-onMounted(async () => {
-  try {
-    await api.health()
-    scenarios.value = await api.scenarios()
-  } catch (e) {
-    offline.value = true
-    error.value = 'Backend ulanmadi. `cd backend && go run .` ishga tushiring.'
-  }
+const isTeacher = computed(() => path.value.startsWith('/teacher'))
+
+function syncPath() {
+  path.value = window.location.pathname || '/'
+}
+
+function go(pathname) {
+  if (window.location.pathname === pathname) return
+  window.history.pushState({}, '', pathname)
+  syncPath()
+}
+
+onMounted(() => {
+  window.addEventListener('popstate', syncPath)
 })
 
-async function startScenario(brief) {
-  error.value = ''
-  try {
-    scenario.value = await api.scenario(brief.id)
-    const s = await api.startSession(brief.id)
-    sessionId.value = s.session_id
-    view.value = 'chat'
-  } catch (e) {
-    error.value = e.message
-  }
-}
-
-function onFinished(g) {
-  grade.value = g
-  view.value = 'grade'
-}
-
-function restart() {
-  scenario.value = null
-  sessionId.value = null
-  grade.value = null
-  view.value = 'intro'
-}
+onBeforeUnmount(() => {
+  window.removeEventListener('popstate', syncPath)
+})
 </script>
 
 <template>
   <div class="shell">
     <header class="topbar">
       <div class="brand">
-        <span class="logo">◆</span>
+        <span class="logo">SS</span>
         <div>
           <div class="brand-name">Smart Sim</div>
-          <div class="brand-sub">AI Simulation Platform</div>
+          <div class="brand-sub">Uzbek AI simulation lab</div>
         </div>
       </div>
-      <div class="top-right">
-        <span v-if="scenario" class="pill">{{ scenario.subject }}</span>
-        <span class="pill" :class="offline ? 'pill-bad' : 'pill-good'">
-          {{ offline ? 'Backend offline' : 'Backend online' }}
-        </span>
-      </div>
+      <nav class="nav">
+        <button class="nav-btn" :class="{ active: !isTeacher }" @click="go('/')">Student</button>
+        <button class="nav-btn" :class="{ active: isTeacher }" @click="go('/teacher')">Teacher</button>
+      </nav>
     </header>
 
     <main class="stage">
-      <p v-if="error" class="error">{{ error }}</p>
-
-      <Transition name="fade" mode="out-in">
-        <ScenarioIntro
-          v-if="view === 'intro'"
-          :scenarios="scenarios"
-          :offline="offline"
-          @start="startScenario"
-          key="intro"
-        />
-        <ChatPanel
-          v-else-if="view === 'chat'"
-          :scenario="scenario"
-          :session-id="sessionId"
-          @finished="onFinished"
-          key="chat"
-        />
-        <GradePanel
-          v-else
-          :scenario="scenario"
-          :grade="grade"
-          @restart="restart"
-          key="grade"
-        />
-      </Transition>
+      <TeacherPanel v-if="isTeacher" />
+      <StudentPanel v-else />
     </main>
   </div>
 </template>
@@ -101,60 +54,63 @@ function restart() {
   height: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 1180px;
+  max-width: 1720px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 18px 18px;
 }
 
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 4px;
+  gap: 12px;
+  padding: 14px 2px 12px;
 }
 .brand { display: flex; align-items: center; gap: 14px; }
 .logo {
-  width: 44px; height: 44px;
+  width: 42px; height: 42px;
   display: grid; place-items: center;
-  font-size: 22px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+  font-size: 13px;
+  font-weight: 800;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow);
 }
-.brand-name { font-size: 19px; font-weight: 700; letter-spacing: .2px; }
-.brand-sub { font-size: 12px; color: var(--text-dim); }
+.brand-name { font-size: 18px; font-weight: 800; }
+.brand-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
 
-.top-right { display: flex; gap: 10px; align-items: center; }
-.pill {
-  font-size: 12px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: var(--panel-2);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
+.nav {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
-.pill-good { color: var(--good); border-color: rgba(52, 211, 153, .4); }
-.pill-bad { color: var(--bad); border-color: rgba(248, 113, 113, .4); }
+.nav-btn {
+  background: var(--panel);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+.nav-btn.active {
+  color: var(--paper);
+  background: var(--ink);
+  border-color: var(--ink);
+  box-shadow: var(--shadow);
+}
 
 .stage {
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding-bottom: 24px;
-}
-.error {
-  background: rgba(248, 113, 113, .12);
-  border: 1px solid rgba(248, 113, 113, .4);
-  color: #fecaca;
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin: 0 0 14px;
-  font-size: 14px;
 }
 
 @media (max-width: 760px) {
-  .shell { padding: 0 14px; }
-  .brand-sub { display: none; }
+  .shell { padding: 0 14px 14px; }
+  .topbar { align-items: stretch; flex-direction: column; }
+  .nav { display: grid; grid-template-columns: 1fr 1fr; }
 }
 </style>
