@@ -55,69 +55,79 @@ const features = [
 </template>
 
 <style scoped>
-.intro { overflow-y: auto; padding: 8px 4px 24px; }
+.intro { overflow-y: auto; padding: 12px 4px 32px; }
 
-.hero { max-width: 720px; margin: 14px 0 30px; }
-h1 { font-size: 40px; line-height: 1.1; margin: 0 0 14px; letter-spacing: -.5px; }
+.hero { max-width: 800px; margin: 24px 0 36px; }
+h1 { font-size: 42px; line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.03em; font-weight: 800; }
 .grad {
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.lead { font-size: 17px; color: var(--text-dim); line-height: 1.6; margin: 0; }
+.lead { font-size: 18px; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 400; }
 
 .features {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 38px;
+  gap: 20px;
+  margin-bottom: 44px;
 }
 .feature {
-  background: linear-gradient(160deg, var(--panel-2), var(--panel));
+  background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 20px;
+  padding: 24px;
   box-shadow: var(--shadow);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.feat-icon { font-size: 26px; }
-.feat-title { font-weight: 650; margin: 10px 0 6px; font-size: 16px; }
-.feat-text { color: var(--text-dim); font-size: 14px; line-height: 1.55; }
+.feature:hover {
+  transform: translateY(-2px);
+}
+.feat-icon { font-size: 28px; }
+.feat-title { font-weight: 700; margin: 12px 0 8px; font-size: 17px; color: var(--ink); }
+.feat-text { color: var(--text-dim); font-size: 14.5px; line-height: 1.6; }
 
-.section-title { font-size: 20px; margin: 0 0 16px; }
-.empty { color: var(--text-dim); padding: 8px 0; }
+.section-title { font-size: 22px; margin: 0 0 20px; font-weight: 700; color: var(--ink); }
+.empty { color: var(--text-dim); padding: 12px 0; font-size: 14.5px; }
 
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 20px;
 }
 .card {
   text-align: left;
-  background: linear-gradient(160deg, var(--panel-2), var(--panel));
+  background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 22px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   color: var(--text);
   box-shadow: var(--shadow);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.card:hover { border-color: var(--accent); filter: brightness(1.04); }
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 20px -8px rgba(15, 23, 42, 0.08);
+}
 .card-subject {
   font-size: 12px;
-  color: var(--accent);
+  color: var(--accent-2);
   text-transform: uppercase;
-  letter-spacing: .6px;
-  font-weight: 600;
+  letter-spacing: .8px;
+  font-weight: 700;
 }
-.card-title { font-size: 18px; font-weight: 650; }
-.card-go { color: var(--text-dim); font-size: 14px; margin-top: 4px; }
+.card-title { font-size: 20px; font-weight: 700; color: var(--ink); }
+.card-go { color: var(--text-dim); font-size: 14.5px; margin-top: 6px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s ease; }
+.card:hover .card-go { color: var(--ink); }
 
 @media (max-width: 760px) {
-  h1 { font-size: 30px; }
-  .features { grid-template-columns: 1fr; }
-  .cards { grid-template-columns: 1fr; }
+  h1 { font-size: 32px; }
+  .features { grid-template-columns: 1fr; gap: 16px; }
+  .cards { grid-template-columns: 1fr; gap: 16px; }
 }
 </style>

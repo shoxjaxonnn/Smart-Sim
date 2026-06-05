@@ -4,6 +4,7 @@ import { api } from '../api'
 
 const busy = ref(false)
 const error = ref('')
+const activeTab = ref('upload') // 'upload' | 'editor' | 'scenarios'
 const documents = ref([])
 const scenarios = ref([])
 const selectedDocumentId = ref('')
@@ -106,6 +107,7 @@ async function selectScenarioById(id) {
   try {
     const full = await api.teacherScenario(id)
     syncSelection(full)
+    activeTab.value = 'editor'
   } catch (e) {
     error.value = friendlyError(e)
   }
@@ -116,6 +118,7 @@ function selectDocument(doc) {
   if (doc.scenario_id) {
     selectScenarioById(doc.scenario_id)
   }
+  activeTab.value = 'editor'
 }
 
 function onFileChange(e) {
@@ -143,6 +146,7 @@ async function uploadDocument() {
     selectedDocumentId.value = created.id
     uploadForm.value.file = null
     await loadAll()
+    activeTab.value = 'editor'
   } catch (e) {
     error.value = friendlyError(e)
   } finally {
@@ -161,6 +165,7 @@ async function generateFromDocument(doc) {
       syncSelection(await api.teacherScenario(res.scenario.id))
     }
     await loadAll()
+    activeTab.value = 'editor'
   } catch (e) {
     error.value = friendlyError(e)
   } finally {
@@ -259,9 +264,30 @@ function badgeClass(status) {
       <button class="btn-ghost" :disabled="busy" @click="loadAll">Refresh</button>
     </div>
 
-    <p v-if="error" class="error">{{ error }}</p>
+    <!-- Elegant custom error banner -->
+    <div v-if="error" class="error-banner">
+      <span class="error-icon">⚠️</span>
+      <div class="error-details">
+        <h4>Ulanish xatosi</h4>
+        <p>{{ error }}</p>
+      </div>
+      <button class="error-close" @click="error = ''">✕</button>
+    </div>
 
-    <div class="upload-card">
+    <!-- Tab selectors for mobile screens -->
+    <div class="teacher-tabs">
+      <button class="tab-btn" :class="{ active: activeTab === 'upload' }" @click="activeTab = 'upload'">
+        📁 Hujjatlar & Yuklash
+      </button>
+      <button class="tab-btn" :class="{ active: activeTab === 'editor' }" @click="activeTab = 'editor'">
+        ✍️ Senariy Tahrirlash
+      </button>
+      <button class="tab-btn" :class="{ active: activeTab === 'scenarios' }" @click="activeTab = 'scenarios'">
+        📋 Senariylar
+      </button>
+    </div>
+
+    <div class="upload-card" :class="{ 'tab-visible': activeTab === 'upload', 'tab-hidden': activeTab !== 'upload' }">
       <div class="section-label">Upload document</div>
       <div class="grid-2">
         <label>
@@ -305,7 +331,7 @@ function badgeClass(status) {
     </div>
 
     <div class="teacher-grid">
-      <div class="teacher-list">
+      <div class="teacher-list" :class="{ 'tab-visible': activeTab === 'upload', 'tab-hidden': activeTab !== 'upload' }">
         <div class="section-label">Documents</div>
         <button
           v-for="d in sortedDocuments"
@@ -333,7 +359,7 @@ function badgeClass(status) {
         </div>
       </div>
 
-      <div class="teacher-editor">
+      <div class="teacher-editor" :class="{ 'tab-visible': activeTab === 'editor', 'tab-hidden': activeTab !== 'editor' }">
         <div class="section-label">Scenario editor</div>
         <div v-if="selectedDocument" class="doc-preview">
           <div class="preview-head">
@@ -430,7 +456,7 @@ function badgeClass(status) {
       </div>
     </div>
 
-    <div class="teacher-grid bottom-grid">
+    <div class="teacher-grid bottom-grid" :class="{ 'tab-visible': activeTab === 'scenarios', 'tab-hidden': activeTab !== 'scenarios' }">
       <div class="teacher-list">
         <div class="section-label">Scenarios</div>
         <button

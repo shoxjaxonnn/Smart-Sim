@@ -1,0 +1,44 @@
+[2m5:11:14 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: C:/Users/Shoxjaxon/Desktop/smart-edu/frontend/src/components/TeacherPanel.vue:276:1: Unexpected }[39m
+  Plugin: [35mvite:vue[39m
+  File: [36mC:/Users/Shoxjaxon/Desktop/smart-edu/frontend/src/components/TeacherPanel.vue[39m:760:1
+[33m  758|  }late-columns: 1fr; }
+  759|  }
+  760|  </style>
+     |   ^
+  761|  [39m
+      at Input.error (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\input.js:135:16)
+      at Parser.unexpectedClose (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parser.js:594:22)
+      at Parser.end (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parser.js:337:12)
+      at Parser.parse (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parser.js:463:16)
+      at parse (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parse.js:11:12)
+      at new LazyResult (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\lazy-result.js:165:16)
+      at Processor.process (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\processor.js:53:14)
+      at doCompileStyle (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:19662:36)
+      at Object.compileStyleAsync (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:19582:10)
+      at transformStyle (file:///C:/Users/Shoxjaxon/Desktop/smart-edu/frontend/node_modules/@vitejs/plugin-vue/dist/index.mjs:2832:41)
+[2m5:11:40 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: C:/Users/Shoxjaxon/Desktop/smart-edu/frontend/src/components/TeacherPanel.vue:271:21: Unexpected }[39m
+  Plugin: [35mvite:vue[39m
+  File: [36mC:/Users/Shoxjaxon/Desktop/smart-edu/frontend/src/components/TeacherPanel.vue[39m:755:21
+      at Input.error (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\input.js:135:16)
+      at Parser.unexpectedClose (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parser.js:594:22)
+      at Parser.end (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parser.js:337:12)
+      at Parser.parse (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parser.js:463:16)
+      at parse (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parse.js:11:12)
+      at new LazyResult (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\lazy-result.js:165:16)
+      at Processor.process (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\processor.js:53:14)
+      at doCompileStyle (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:19662:36)
+      at Object.compileStyleAsync (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:19582:10)
+      at transformStyle (file:///C:/Users/Shoxjaxon/Desktop/smart-edu/frontend/node_modules/@vitejs/plugin-vue/dist/index.mjs:2832:41)
+[2m5:12:03 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: C:/Users/Shoxjaxon/Desktop/smart-edu/frontend/src/components/TeacherPanel.vue:278:21: Unexpected }[39m
+  Plugin: [35mvite:vue[39m
+  File: [36mC:/Users/Shoxjaxon/Desktop/smart-edu/frontend/src/components/TeacherPanel.vue[39m:762:21
+      at Input.error (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\input.js:135:16)
+      at Parser.unexpectedClose (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parser.js:594:22)
+      at Parser.end (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parser.js:337:12)
+      at Parser.parse (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parser.js:463:16)
+      at parse (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\parse.js:11:12)
+      at new LazyResult (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\lazy-result.js:165:16)
+      at Processor.process (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\postcss\lib\processor.js:53:14)
+      at doCompileStyle (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:19662:36)
+      at Object.compileStyleAsync (C:\Users\Shoxjaxon\Desktop\smart-edu\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:19582:10)
+      at transformStyle (file:///C:/Users/Shoxjaxon/Desktop/smart-edu/frontend/node_modules/@vitejs/plugin-vue/dist/index.mjs:2832:41)
