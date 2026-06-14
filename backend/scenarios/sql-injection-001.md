@@ -1,52 +1,40 @@
 ---
-id: "econ-breakeven-001"
-title: "Bozorda narxning keskin tushishi (Demping)"
-subject: "Iqtisodiyot / Mikroiqtisodiyot"
+id: "med-metabolism-001"
+title: "Ekstremal ochlik holatida energiya zaxiralari"
+subject: "Tibbiyot / Biokimyo"
 language: "uz"
-status: "approved"
-code_challenge_after_round: 3
-code_language: "python"
 
 facts:
-  company.fixed_costs: "10000 USD"
-  company.variable_cost_per_unit: "5 USD"
-  market.old_price: "15 USD"
-  market.new_price: "8 USD"
-  competitor.strategy: "Demping (arzonlashtirish)"
+  patient.age: "25 yosh"
+  patient.weight: "70 kg"
+  condition: "Kema halokati, oziq-ovqatsiz, faqat suv mavjud"
+  energy_sources: "Uglevodlar, Oqsil, Yog', Keton tanachalari"
+  lowest_calorie_source: "Uglevodlar"
 
 rubric:
-  - name: "Zararsizlik nuqtasini aniqlash"
+  - name: "Metabolik holatni baholash"
     max: 3
-    keywords: ["zararsizlik nuqtasi", "break-even", "qoplash"]
-  - name: "Bozor holatini tahlil qilish"
+    keywords: ["ochlik", "glikogen", "tuganlanish", "uglevod"]
+  - name: "Energiya manbalarini solishtirish"
     max: 4
-    keywords: ["demping", "marja", "foyda", "zarar"]
-  - name: "Strategik yechim taklif qilish"
+    keywords: ["yog'", "oqsil", "zaxira", "kaloriya", "gramm"]
+  - name: "Fiziologik yechim tushuntirishi"
     max: 3
-    keywords: ["xarajatni kamaytirish", "narx strategiyasi", "ishlab chiqarish hajmi", "optimallashtirish"]
+    keywords: ["keton", "miya", "moslashuv", "omon qolish"]
 
 model_answer: >
-  Bozorda raqobatchi tomonidan demping (narxni sun'iy pasaytirish) qilinmoqda.
-  Oldingi narxda (15$) zararsizlik nuqtasi 1000 dona mahsulot edi. Yangi narxda
-  (8$) bir mahsulotdan tushadigan foyda marjasi 3$ gacha tushib ketdi, natijada 
-  zararsizlik nuqtasi 3334 donagacha oshdi. Yechim — o'zgaruvchan xarajatlarni
-  optimallashtirish yoki vaqtincha sotuv hajmini oshirish strategiyasini qo'llash.
+  Yuqoridagi holatda erkakni eng kam kaloriya bilan ta'minlaydigan energiya zaxirasi bu 
+  uglevodlardir. Organizmda uglevodlar (asosan jigardagi va mushaklardagi glikogen ko'rinishida) 
+  juda cheklangan miqdorda saqlanadi va ekstremal ochlik holatida dastlabki 24-48 soat ichidayoq 
+  sarflanib bo'ladi. Aksincha, yog' to'qimasi eng ko'p energiya beruvchi manba hisoblansa, 
+  oqsillar va keton tanachalari ochlikning keyingi bosqichlarida asosiy energiya manbaiga aylanadi.
 
-code_challenge:
-  buggy_code: |
-    def calculate_break_even(fixed_costs, variable_cost, selling_price):
-        # Xato: Maxrajda noto'g'ri arifmetik amal bajarilgan
-        margin = selling_price + variable_cost
-        return fixed_costs / margin
-  hint: "Zararsizlik nuqtasi (Break-even Point) = Doimiy xarajatlar / (Sotuv narxi - O'zgaruvchan xarajat)."
-  tests: |
-    assert calculate_break_even(10000, 5, 15) == 1000, "15$ sotuv narxida 1000 dona bo'lishi kerak"
-    assert calculate_break_even(12000, 4, 10) == 2000, "10$ sotuv narxida 2000 dona bo'lishi kerak"
+
 ---
 
 ## Vaziyat
 
-Sen yirik ishlab chiqarish kompaniyasining bosh iqtisodchisisan. Juma kuni kechqurun bozorda raqobatchilar o'z mahsulotlari narxini keskin tushirib yuborganligi haqida xabar keldi. Kompaniya rahbari sendan ishlab chiqarishni shu yangi narxda davom ettirish moliyaviy jihatdan qanchalik xavfsiz ekanligi haqida tezkor xulosa so'ramoqda. Muammoni tahlil qil, xavfni bahola va tegishli qaror taklif qil.
+Sen tibbiyot xodimi va qutqaruv guruhi maslahatchisisan. Kimsasiz orolda kema halokati tufayli qolib ketgan 25 yoshli, taxminan 70 kg vaznga ega erkak topildi. Uning aytishicha, yegulik umuman bo'lmagan, shu vaqtgacha faqat ichimlik suvi iste'mol qilib jon saqlagan. Organizmning ekstremal ochlikka moslashuvi jarayonida bemorning omon qolish mexanizmini tahlil qilishing kerak. Berilgan energiya manbalari (Uglevodlar, Oqsil, Yog', Keton tanachalari) orasidan qaysi biri bemorni eng kam miqdorda kaloriya bilan ta'minlaganini aniqla va buning sababini tibbiy jihatdan tushuntirib ber.
 
 (AI bu vaziyatni boshqaradi, lekin undan chetga chiqmaydi. Aniq raqam
 so'ralsa — faqat facts ichidan get_fact orqali beradi.)

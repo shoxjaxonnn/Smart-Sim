@@ -78,10 +78,6 @@ function sameSubject(a, b) {
 <template>
   <section class="student-shell">
     <div class="student-head">
-      <div>
-        <div class="kicker">Student panel</div>
-        <h2>AI simulation workspace</h2>
-      </div>
       <div class="right">
         <span class="pill" :class="backendOnline ? 'pill-good' : 'pill-bad'">
           {{ backendOnline ? 'Backend online' : 'Backend offline' }}
